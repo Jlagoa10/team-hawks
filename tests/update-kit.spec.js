@@ -28,7 +28,9 @@ test('family heading is static and its three outlined lines never overlap', asyn
     expect(boxes).toHaveLength(3);
     expect(boxes[0].bottom).toBeLessThanOrEqual(boxes[1].top);
     expect(boxes[1].bottom).toBeLessThanOrEqual(boxes[2].top);
-    await expect(page.locator('#manifesto [data-kinetic] .kinetic-word').first()).toBeVisible();
+    await expect(page.locator('#manifesto-title')).toBeVisible();
+    await expect(page.locator('#manifesto-title .kinetic-word')).toHaveCount(0);
+    await expect(page.locator('#manifesto-title')).toHaveCSS('transform', 'none');
   }
 });
 

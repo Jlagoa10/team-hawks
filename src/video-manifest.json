@@ -6,8 +6,8 @@
     "src": "assets/videos/video-01.mp4",
     "poster": "assets/images/fabio-training-01.webp",
     "description": "",
-    "status": "pending",
-    "ratio": "16 / 9",
+    "status": "ready",
+    "ratio": "9 / 16",
     "tracks": []
   },
   {
@@ -17,8 +17,8 @@
     "src": "assets/videos/video-02.mp4",
     "poster": "assets/images/fabio-training-02.webp",
     "description": "",
-    "status": "pending",
-    "ratio": "16 / 9",
+    "status": "ready",
+    "ratio": "9 / 16",
     "tracks": []
   },
   {
@@ -28,8 +28,8 @@
     "src": "assets/videos/video-03.mp4",
     "poster": "assets/images/footvolley-action.webp",
     "description": "",
-    "status": "pending",
-    "ratio": "16 / 9",
+    "status": "ready",
+    "ratio": "9 / 16",
     "tracks": []
   },
   {
@@ -39,8 +39,8 @@
     "src": "assets/videos/video-04.mp4",
     "poster": "assets/images/footvolley-ball.webp",
     "description": "",
-    "status": "pending",
-    "ratio": "16 / 9",
+    "status": "ready",
+    "ratio": "9 / 16",
     "tracks": []
   },
   {
@@ -50,8 +50,8 @@
     "src": "assets/videos/video-05.mp4",
     "poster": "assets/images/team-event-02.webp",
     "description": "",
-    "status": "pending",
-    "ratio": "16 / 9",
+    "status": "ready",
+    "ratio": "9 / 16",
     "tracks": []
   }
 ]

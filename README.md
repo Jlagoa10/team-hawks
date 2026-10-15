@@ -30,7 +30,7 @@ O arquivo fica em `exports/team-hawks.html`, com as imagens, fontes, estilos e a
 
 ## Cinco vídeos — ainda não fornecidos
 
-**Os cinco clipes reais ainda não foram enviados.** Já existem cinco quadros visíveis, cada um com título em português acima da mídia, pôster e a mensagem “VÍDEO EM BREVE”. Enquanto o arquivo estiver ausente, não há player, botão de reprodução ou requisição ao MP4 inexistente.
+**Os cinco clipes estão disponíveis e são verticais.** Cada quadro tem título acima da mídia e controles nativos. Se um arquivo estiver ausente ou falhar, o quadro mostra o pôster e a mensagem “VÍDEO EM BREVE”, sem player quebrado.
 
 A única fonte de configuração é [src/video-manifest.json](src/video-manifest.json):
 
@@ -51,7 +51,7 @@ Para disponibilizar um vídeo:
 5. Para hospedagem externa, informe uma URL HTTPS em `src` e `status: "ready"` depois de confirmar que o arquivo existe. Mantenha `status: "pending"` para conteúdo externo não disponível. Arquivos locais são conferidos pela existência real, sem depender do rótulo `status`.
 6. Quando houver transcrição verdadeira, adicione arquivos WebVTT em `tracks`, por exemplo `[{"src":"assets/videos/video-01.pt-BR.vtt","lang":"pt-BR","label":"Português","default":true}]`. Subtítulos de acessibilidade são separados do título acima do vídeo. Não foram inventadas transcrições.
 
-Os players têm controles nativos, `playsinline`, carregamento de metadados próximo à tela e **nenhum autoplay**. Ao iniciar um vídeo, os outros pausam. Eles também pausam fora da tela e quando a aba perde visibilidade; erro de mídia restaura o pôster. O hero permanece com a águia selecionada e nunca é substituído por esses cinco clipes.
+Os players têm controles nativos, `playsinline` e carregamento de metadados próximo à tela, sem capas. Eles reproduzem automaticamente sem som quando pelo menos 25% do vídeo entra na tela e pausam ao sair ou quando a aba fica oculta. Os controles permitem ativar o som e pausar manualmente. Erros mostram a mensagem de indisponibilidade. O hero permanece com a águia selecionada.
 
 ## Imagens do kit e contato
 

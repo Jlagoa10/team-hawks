@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFileSync, statSync } from 'node:fs';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 
 const root = import.meta.dirname;
 const manifestPath = resolve(root, 'src/video-manifest.json');
@@ -12,7 +12,12 @@ const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 function localVideoExists(entry) {
   if (/^[a-z]+:/i.test(entry.src)) return false;
   const file = resolve(root, 'public', entry.src.replace(/^\.?\//, ''));
-  return file.startsWith(`${resolve(root, 'public')}/`) && existsSync(file);
+  const path = relative(resolve(root, 'public'), file);
+  if (!path || path === '..' || path.startsWith(`..${sep}`) || isAbsolute(path)) return false;
+  try {
+    const stats = statSync(file);
+    return stats.isFile() && stats.size > 0;
+  } catch { return false; }
 }
 
 export default defineConfig({
@@ -44,10 +49,9 @@ export default defineConfig({
           return readManifest().filter((entry) => entry.group === group).map((entry) => {
             const id = escapeHTML(entry.id);
             const ratio = /^(16\s*\/\s*9|9\s*\/\s*16)$/.test(entry.ratio) ? entry.ratio : '16 / 9';
-            const poster = /^https:\/\//.test(entry.poster) ? entry.poster : `/${entry.poster.replace(/^\.?\//, '')}`;
             return `<article class="video-card" data-video-id="${id}" data-status="pending" aria-labelledby="${id}-title">
               <div class="video-heading"><span class="eyebrow" aria-hidden="true">${id.slice(-2)}</span><h3 id="${id}-title" class="display">${escapeHTML(entry.title)}</h3></div>
-              <div class="video-frame${ratio.trim().startsWith('9') ? ' video-frame--portrait' : ''}" style="--video-ratio:${ratio}"><img class="video-poster" src="${escapeHTML(poster)}" alt="" loading="lazy" decoding="async"><p class="video-pending">VÍDEO EM BREVE</p></div>
+              <div class="video-frame${ratio.trim().startsWith('9') ? ' video-frame--portrait' : ''}" style="--video-ratio:${ratio}"><p class="video-pending">VÍDEO EM BREVE</p></div>
               ${entry.description ? `<p class="video-description">${escapeHTML(entry.description)}</p>` : ''}
             </article>`;
           }).join('\n');

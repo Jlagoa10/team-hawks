@@ -14,6 +14,7 @@ async function configureVideos(page, src, count = 2, extra = {}) {
 }
 
 test('five absent videos: permanent headings above clean posters, no missing-file requests', async ({ page }) => {
+  await configureVideos(page, '', 0);
   const mediaRequests = [];
   page.on('request', (request) => { if (/\.mp4(?:\?|$)/.test(request.url())) mediaRequests.push(request.url()); });
   await page.goto('/');
@@ -33,7 +34,31 @@ test('five absent videos: permanent headings above clean posters, no missing-fil
   expect(mediaRequests).toEqual([]);
 });
 
-test('configured clips: real controls, manual playback, exclusive/offscreen pause, headings stay above', async ({ page }) => {
+test('all five supplied MP4s load metadata and can play and seek', async ({ page }) => {
+  await page.goto('/');
+  for (const entry of manifest) {
+    const card = page.locator(`[data-video-id="${entry.id}"]`);
+    await card.scrollIntoViewIfNeeded();
+    await expect(card).toHaveAttribute('data-status', 'ready');
+    const video = card.locator('video');
+    await expect(video).toBeVisible();
+    const media = await video.evaluate((element) => ({
+      width: element.videoWidth, height: element.videoHeight, duration: element.duration,
+    }));
+    expect(media.duration).toBeGreaterThan(0);
+    expect(media.height > media.width).toBe(entry.ratio === '9 / 16');
+    await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
+    await expect(video).not.toHaveAttribute('poster');
+    expect(await video.evaluate((element) => element.muted)).toBe(true);
+    await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeGreaterThan(0);
+    await video.evaluate((element) => { element.currentTime = element.duration / 2; });
+    await expect.poll(() => video.evaluate((element) => element.seeking)).toBe(false);
+    expect(await video.evaluate((element) => element.error)).toBeNull();
+    await video.evaluate((element) => element.pause());
+  }
+});
+
+test('configured clips: real controls, automatic playback, offscreen pause, headings stay above', async ({ page }) => {
   await configureVideos(page, '/tests/fixtures/scrub.webm');
   await page.goto('/');
   const cards = page.locator('[data-video-group="training"] .video-card');
@@ -44,13 +69,13 @@ test('configured clips: real controls, manual playback, exclusive/offscreen paus
   await expect(second).toBeVisible();
   await expect(first).toHaveAttribute('controls', '');
   await expect(first).toHaveAttribute('playsinline', '');
-  expect(await first.evaluate((video) => video.paused)).toBe(true);
+  await expect.poll(() => first.evaluate((video) => video.paused)).toBe(false);
   await first.evaluate((video) => video.play());
   await expect.poll(() => first.evaluate((video) => video.currentTime)).toBeGreaterThan(0);
   await first.evaluate((video) => { video.currentTime = 3; });
   await expect.poll(() => first.evaluate((video) => video.currentTime)).toBeGreaterThanOrEqual(3);
   await second.evaluate((video) => video.play());
-  await expect.poll(() => first.evaluate((video) => video.paused)).toBe(true);
+  await expect.poll(() => first.evaluate((video) => video.paused)).toBe(false);
   await expect.poll(() => second.evaluate((video) => video.paused)).toBe(false);
   const title = await cards.first().locator('h3').boundingBox();
   const frame = await cards.first().locator('.video-frame').boundingBox();
@@ -68,7 +93,7 @@ test('unusable configured clip returns to an honest poster with no broken player
   const card = page.locator('[data-video-id="video-01"]');
   await card.scrollIntoViewIfNeeded();
   await expect(card).toHaveAttribute('data-status', 'pending');
-  await expect(card.locator('.video-poster')).toBeVisible();
+  await expect(card.locator('.video-poster')).toHaveCount(0);
   await expect(card.locator('video')).toHaveCount(0);
   await expect(card.locator('.video-pending')).toHaveText('VÍDEO EM BREVE');
   await expect(card.locator('h3')).toHaveText('TREINAMENTO TÉCNICO');
@@ -84,7 +109,7 @@ test('a real subtitle track remains manually controllable under reduced motion',
   const video = card.locator('video');
   await expect(video).toBeVisible();
   await expect(video.locator('track')).toHaveAttribute('srclang', 'pt-BR');
-  expect(await video.evaluate((element) => element.paused)).toBe(true);
+  await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
   await video.evaluate((element) => element.play());
   await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);

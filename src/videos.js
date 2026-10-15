@@ -12,6 +12,10 @@ const safeURL = (value) => {
 export function initVideos(listen) {
   const players = new Set();
   const available = new Set(localVideoIDs);
+  const onScreen = new Set();
+  const resume = (video) => {
+    if (!document.hidden && onScreen.has(video)) video.play().catch(() => {});
+  };
   const loading = new IntersectionObserver((entries) => {
     for (const { target, isIntersecting } of entries) {
       if (!isIntersecting) continue;
@@ -21,26 +25,34 @@ export function initVideos(listen) {
     }
   }, { rootMargin: '300px 0px' });
   const visible = new IntersectionObserver((entries) => {
-    for (const { target, isIntersecting } of entries) {
-      if (!isIntersecting) target.querySelector('video')?.pause();
+    for (const { target: video, isIntersecting, intersectionRatio } of entries) {
+      if (isIntersecting && intersectionRatio >= 0.25) {
+        onScreen.add(video);
+        resume(video);
+      } else {
+        onScreen.delete(video);
+        video.pause();
+      }
     }
-  });
+  }, { threshold: [0, 0.25] });
   const pause = () => players.forEach((video) => video.pause());
-  listen(document, 'visibilitychange', () => { if (document.hidden) pause(); });
+  listen(document, 'visibilitychange', () => {
+    if (document.hidden) pause();
+    else onScreen.forEach(resume);
+  });
 
   function mountPlayer(card, spec) {
     const src = safeURL(spec.src);
     if (!src) return;
     const frame = card.querySelector('.video-frame');
-    const poster = card.querySelector('.video-poster');
     const pending = card.querySelector('.video-pending');
     const video = document.createElement('video');
     video.controls = true;
     video.playsInline = true;
+    video.muted = true;
+    video.defaultMuted = true;
     video.preload = 'metadata';
-    video.hidden = true;
     video.setAttribute('aria-label', spec.title);
-    video.poster = poster.src;
     for (const subtitle of spec.tracks || []) {
       const url = safeURL(subtitle.src);
       if (!url) continue;
@@ -52,29 +64,27 @@ export function initVideos(listen) {
       track.default = !!subtitle.default;
       video.append(track);
     }
-    listen(video, 'loadeddata', () => {
+    listen(video, 'loadedmetadata', () => {
       card.dataset.status = 'ready';
-      poster.hidden = true;
       pending.hidden = true;
       video.hidden = false;
     });
     listen(video, 'error', () => {
       video.pause();
       card.dataset.status = 'pending';
-      poster.hidden = false;
       pending.hidden = false;
       video.hidden = true;
-      // Remove the unusable control while keeping its permanent heading/poster.
+      visible.unobserve(video);
+      onScreen.delete(video);
       players.delete(video);
       video.remove();
     });
-    listen(video, 'play', () => {
-      players.forEach((other) => { if (other !== video) other.pause(); });
-    });
     card.dataset.status = 'loading';
+    pending.hidden = true;
     players.add(video);
     frame.append(video);
     video.src = src;
+    visible.observe(video);
   }
 
   for (const spec of manifest) {
@@ -82,7 +92,6 @@ export function initVideos(listen) {
     if (!card) continue;
     const remoteReady = /^https:\/\//.test(spec.src) && spec.status === 'ready';
     if (available.has(spec.id) || remoteReady) loading.observe(card);
-    visible.observe(card);
   }
   return {
     pause,
