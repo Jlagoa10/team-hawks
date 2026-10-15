@@ -1,0 +1,114 @@
+[
+  {
+    "source": "contact-eagle.jpg",
+    "path": "assets/images/contact-eagle.webp",
+    "width": 1672,
+    "height": 941,
+    "originalBytes": 252668,
+    "optimizedBytes": 118744
+  },
+  {
+    "source": "eagle-closeup.png",
+    "path": "assets/images/eagle-closeup.webp",
+    "width": 1672,
+    "height": 940,
+    "originalBytes": 3353269,
+    "optimizedBytes": 242430
+  },
+  {
+    "source": "fabio-editorial.jpeg",
+    "path": "assets/images/fabio-editorial.webp",
+    "width": 1086,
+    "height": 1448,
+    "originalBytes": 199239,
+    "optimizedBytes": 201514
+  },
+  {
+    "source": "fabio-training-01.jpeg",
+    "path": "assets/images/fabio-training-01.webp",
+    "width": 1200,
+    "height": 1600,
+    "originalBytes": 436251,
+    "optimizedBytes": 459324
+  },
+  {
+    "source": "fabio-training-02.jpeg",
+    "path": "assets/images/fabio-training-02.webp",
+    "width": 1200,
+    "height": 1600,
+    "originalBytes": 433803,
+    "optimizedBytes": 459800
+  },
+  {
+    "source": "footvolley-action.jpg",
+    "path": "assets/images/footvolley-action.webp",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 436455,
+    "optimizedBytes": 282282
+  },
+  {
+    "source": "footvolley-ball.jpg",
+    "path": "assets/images/footvolley-ball.webp",
+    "width": 1086,
+    "height": 1448,
+    "originalBytes": 334883,
+    "optimizedBytes": 193912
+  },
+  {
+    "source": "hero-alternate.jpg",
+    "path": "assets/images/hero-alternate.webp",
+    "width": 1672,
+    "height": 941,
+    "originalBytes": 235561,
+    "optimizedBytes": 111632
+  },
+  {
+    "source": "hero-eagle.png",
+    "path": "assets/images/hero-eagle.webp",
+    "width": 1672,
+    "height": 941,
+    "originalBytes": 2054083,
+    "optimizedBytes": 111632
+  },
+  {
+    "source": "method-court.jpg",
+    "path": "assets/images/method-court.webp",
+    "width": 1060,
+    "height": 1484,
+    "originalBytes": 412808,
+    "optimizedBytes": 239356
+  },
+  {
+    "source": "team-action.jpg",
+    "path": "assets/images/team-action.webp",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 335920,
+    "optimizedBytes": 199768
+  },
+  {
+    "source": "team-event-01.jpeg",
+    "path": "assets/images/team-event-01.webp",
+    "width": 1200,
+    "height": 1600,
+    "originalBytes": 336228,
+    "optimizedBytes": 345312
+  },
+  {
+    "source": "team-event-02.jpeg",
+    "path": "assets/images/team-event-02.webp",
+    "width": 1200,
+    "height": 1600,
+    "originalBytes": 371918,
+    "optimizedBytes": 380568
+  },
+  {
+    "source": "team-group.png",
+    "path": "assets/images/team-group.webp",
+    "width": 960,
+    "height": 1280,
+    "originalBytes": 2436560,
+    "optimizedBytes": 296840
+  }
+]

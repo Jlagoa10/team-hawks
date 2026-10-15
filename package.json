@@ -1,0 +1,21 @@
+{
+  "name": "team-hawks",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "export": "npm run build && node scripts/export-standalone.mjs",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "gsap": "3.14.2"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.58.2",
+    "vite": "7.3.1"
+  }
+}
