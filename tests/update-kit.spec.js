@@ -61,11 +61,12 @@ test('JLK and Lauton coupons stay independent and preserve exact capitalization'
   await page.goto('/');
   await expect(page.locator('.partner-grid > li')).toHaveCount(4);
   const jlk = page.locator('[data-partner="jlk"]');
-  await expect(jlk).toContainText('5%');
+  await expect(jlk).toContainText('condições especiais');
+  await expect(jlk).not.toContainText('5%');
   await expect(jlk.locator('a')).toHaveAttribute('href', 'https://jlkoficial.com');
   await expect(jlk.locator('a')).toHaveAttribute('rel', 'noopener noreferrer');
-  await page.getByRole('button', { name: 'Copiar cupom Hawks05', exact: true }).click();
-  expect(await page.evaluate(() => window.copiedCoupon)).toBe('Hawks05');
+  await page.getByRole('button', { name: 'Copiar cupom HAWKSJLK', exact: true }).click();
+  expect(await page.evaluate(() => window.copiedCoupon)).toBe('HAWKSJLK');
   await expect(jlk.locator('[aria-live]')).toHaveText('Copiado');
   await page.getByRole('button', { name: 'Copiar cupom TEAMHAWKS', exact: true }).click();
   expect(await page.evaluate(() => window.copiedCoupon)).toBe('TEAMHAWKS');

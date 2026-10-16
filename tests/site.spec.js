@@ -78,17 +78,13 @@ for (const width of [320, 390, 768, 1024, 1440]) {
   });
 }
 
-test('reduced motion and manual pause remove pins and preserve full content', async ({ page }) => {
+test('device reduced motion removes pins and preserves full content without a pause button', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.pin-spacer')).toHaveCount(2);
-  await page.getByRole('button', { name: 'Pausar animações', exact: true }).click();
-  await expect(page.locator('.pin-spacer')).toHaveCount(0);
-  await expect(page.locator('.training-transcript')).toBeVisible();
-  await page.getByRole('button', { name: 'Ativar animações', exact: true }).click();
-  await expect(page.locator('.pin-spacer')).toHaveCount(2);
+  await expect(page.locator('.motion-control')).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Movimento reduzido', exact: true })).toBeDisabled();
+  await expect(page.locator('.training-transcript')).toBeVisible();
   await expect(page.locator('.training-transcript')).toContainText('Execute.');
   for (const stage of await page.locator('.method-chapter').all()) await expect(stage).toContainText(/./);
 });
@@ -112,7 +108,7 @@ test('resizing and toggling motion never duplicate pins', async ({ page }) => {
   }
 });
 
-test('spotlight and button surfaces respond; marquee can pause', async ({ page }) => {
+test('spotlight and button surfaces respond; marquee runs without a pause control', async ({ page }) => {
   await page.goto('/');
   const card = page.locator('#para-quem .spotlight-card').first();
   await card.hover();
@@ -120,8 +116,9 @@ test('spotlight and button surfaces respond; marquee can pause', async ({ page }
   const button = page.locator('#contato .motion-button').first();
   await button.hover();
   await expect.poll(() => button.evaluate((el) => parseFloat(getComputedStyle(el).borderRadius))).toBe(28);
-  await page.getByRole('button', { name: 'Pausar movimento', exact: true }).click();
-  await expect(page.locator('.marquee-track')).toHaveCSS('animation-play-state', 'paused');
+  await expect(page.locator('.marquee-toggle, .motion-control')).toHaveCount(0);
+  await page.locator('.partner-marquee').scrollIntoViewIfNeeded();
+  await expect(page.locator('.marquee-track')).toHaveCSS('animation-play-state', 'running');
 });
 
 test('essential content remains available with JavaScript disabled', async ({ browser }) => {

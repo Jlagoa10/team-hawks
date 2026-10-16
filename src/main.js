@@ -1,5 +1,3 @@
-import './base.css';
-import './motion.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { content } from './content.js';
@@ -10,8 +8,8 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const reduceQuery = matchMedia('(prefers-reduced-motion: reduce)');
 const mobileQuery = matchMedia('(max-width: 600px)');
+const trainingCompactQuery = matchMedia('(max-width: 1023px)');
 const fineQuery = matchMedia('(hover: hover) and (pointer: fine)');
-let userPaused = false;
 let motionContext;
 let refreshFrame;
 let destroyed = false;
@@ -36,6 +34,21 @@ let menuOpen = false;
 const solidClasses = ['border-white/10', 'bg-ink/85', 'backdrop-blur-md'];
 const clearClasses = ['border-transparent', 'bg-transparent'];
 function paintHeader() {
+  const welcome = $('.hero-morph');
+  const welcomeStyle = welcome && getComputedStyle(welcome);
+  const compact = (welcomeStyle && welcomeStyle.visibility !== 'hidden' && welcomeStyle.display !== 'none')
+    || $('#manifesto').getBoundingClientRect().top <= header.offsetHeight;
+  header.classList.toggle('is-compact', Boolean(compact));
+  const sampleY = header.getBoundingClientRect().bottom / 2;
+  const surface = [...$$('main > section'), $('footer')].filter(Boolean).find((section) => {
+    const bounds = section.getBoundingClientRect();
+    return bounds.top <= sampleY && bounds.bottom > sampleY;
+  });
+  const background = surface?.id === 'inicio' ? $('.hero-stage') : surface;
+  const channels = background && getComputedStyle(background).backgroundColor.match(/[\d.]+/g)?.map(Number);
+  const darkBackground = channels && (channels[3] === undefined || channels[3] > .5)
+    && (channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722) < 128;
+  header.classList.toggle('on-dark-section', Boolean(compact && darkBackground && !menuOpen));
   const solid = menuOpen || scrollY > 24;
   header.classList.remove(...(solid ? clearClasses : solidClasses));
   header.classList.add(...(solid ? solidClasses : clearClasses));
@@ -168,7 +181,7 @@ function paintStack(animate = true) {
       scale: 1 - distance * .055,
       opacity: distance === 3 ? .4 : 1,
     };
-    if (animate && !reduceQuery.matches && !userPaused) {
+    if (animate && !reduceQuery.matches) {
       gsap.to(card, { ...properties, duration: .75, ease: 'power3.inOut', overwrite: true });
     } else gsap.set(card, properties);
   });
@@ -230,7 +243,7 @@ $$('.spotlight-card, .motion-button').forEach((surface) => {
   let bounds;
   listen(surface, 'pointerenter', () => { bounds = surface.getBoundingClientRect(); });
   listen(surface, 'pointermove', (event) => {
-    if (!fineQuery.matches || reduceQuery.matches || userPaused) return;
+    if (!fineQuery.matches || reduceQuery.matches) return;
     bounds ||= surface.getBoundingClientRect();
     const x = event.clientX - bounds.left;
     const y = event.clientY - bounds.top;
@@ -250,11 +263,6 @@ const marqueeObserver = new IntersectionObserver((entries) => {
   entries.forEach(({ target, isIntersecting }) => target.classList.toggle('is-offscreen', !isIntersecting));
 });
 marquees.forEach((el) => marqueeObserver.observe(el));
-listen($('.marquee-toggle'), 'click', () => {
-  const paused = $('.partner-marquee').classList.toggle('is-paused');
-  $('.marquee-toggle').setAttribute('aria-pressed', String(paused));
-  $('.marquee-toggle').textContent = paused ? 'Retomar movimento' : 'Pausar movimento';
-});
 
 // Split text without changing semantics, nesting or screen-reader wording.
 $$('[data-kinetic]').forEach((element) => {
@@ -279,12 +287,8 @@ $$('[data-kinetic]').forEach((element) => {
 // A single GSAP context owns every scroll sequence. Native scrolling is untouched.
 function buildMotion() {
   motionContext?.revert();
-  const reduced = reduceQuery.matches || userPaused;
+  const reduced = reduceQuery.matches;
   document.documentElement.classList.toggle('motion-disabled', reduced);
-  const control = $('.motion-control');
-  control.textContent = reduceQuery.matches ? 'Movimento reduzido' : userPaused ? 'Ativar animações' : 'Pausar animações';
-  control.setAttribute('aria-pressed', String(reduced));
-  control.disabled = reduceQuery.matches;
   paintStack(false);
   if (reduced) {
     videos.pause();
@@ -295,6 +299,7 @@ function buildMotion() {
   try {
     motionContext = gsap.context((context) => {
       const hero = gsap.timeline({
+        onUpdate: paintHeader,
         scrollTrigger: {
           trigger: '#inicio', start: 'top top', end: () => `+=${innerHeight * (mobile ? 1.3 : 1.9)}`,
           pin: '.hero-stage', scrub: .75, invalidateOnRefresh: true,
@@ -391,7 +396,7 @@ function buildMotion() {
         scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
       $$('.hover-gallery > li').forEach((item, index) => {
-        gsap.fromTo(item, { y: mobile ? 40 : 100 + index % 3 * 40, rotation: index % 2 ? 5 : -5, scale: .86 }, {
+        gsap.fromTo(item, { y: mobile ? 24 : 100 + index % 3 * 40, rotation: mobile ? 0 : index % 2 ? 5 : -5, scale: mobile ? 1 : .86 }, {
           y: 0, rotation: 0, scale: 1, ease: 'none',
           scrollTrigger: { trigger: item, start: 'top bottom', end: 'top 35%', scrub: .8 },
         });
@@ -429,8 +434,9 @@ function buildMotion() {
           },
         },
       });
-      training.fromTo('.training-media', { scale: 1.08, xPercent: -5 }, { scale: 1.45, xPercent: 5, duration: 1, ease: 'none' })
-        .fromTo('.training-copy', { x: 0 }, { x: mobile ? -5 : 40, duration: 1, ease: 'none' }, 0);
+      const compactTraining = trainingCompactQuery.matches;
+      training.fromTo('.training-media', { scale: compactTraining ? 1 : 1.08, xPercent: compactTraining ? 0 : -5 }, { scale: compactTraining ? 1.08 : 1.45, xPercent: compactTraining ? 0 : 5, duration: 1, ease: 'none' })
+        .fromTo('.training-copy', { x: 0 }, { x: mobile ? 0 : 40, duration: 1, ease: 'none' }, 0);
     });
   } catch (error) {
     motionContext?.revert();
@@ -439,13 +445,9 @@ function buildMotion() {
   }
   requestRefresh();
 }
-const motionControl = document.createElement('button');
-motionControl.type = 'button';
-motionControl.className = 'motion-control';
-document.body.append(motionControl);
-listen(motionControl, 'click', () => { userPaused = !userPaused; buildMotion(); });
 listen(reduceQuery, 'change', buildMotion);
 listen(mobileQuery, 'change', buildMotion);
+listen(trainingCompactQuery, 'change', buildMotion);
 buildMotion();
 document.fonts.ready.then(requestRefresh);
 // Image/video frames reserve their size in CSS. Lazy decoding must not refresh
