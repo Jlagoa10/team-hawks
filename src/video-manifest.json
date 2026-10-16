@@ -24,7 +24,7 @@
   {
     "id": "video-03",
     "title": "TEAM HAWKS EM AÇÃO",
-    "group": "action",
+    "group": "events",
     "src": "assets/videos/video-03.mp4",
     "poster": "assets/images/footvolley-action.webp",
     "description": "",
@@ -35,7 +35,7 @@
   {
     "id": "video-04",
     "title": "EVOLUÇÃO NA AREIA",
-    "group": "action",
+    "group": "training",
     "src": "assets/videos/video-04.mp4",
     "poster": "assets/images/footvolley-ball.webp",
     "description": "",

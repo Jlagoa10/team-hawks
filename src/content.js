@@ -4,7 +4,7 @@ export const content = {
   instagramDM: 'https://ig.me/m/team_hawks_futevolei',
   media: {
     coach: { image: 'assets/images/fabio-training-01.webp', alt: 'Fábio Marconi na quadra de futevôlei' },
-    team: { image: 'assets/images/team-action.webp', alt: 'Imagem conceitual de uma jogadora de futevôlei em contraluz' },
+    team: { image: '', alt: '' },
     events: { image: 'assets/images/team-group.webp', alt: 'Integrantes do Team Hawks reunidos na quadra de areia' },
   },
   // Up to four approved images for the interactive stack, in display order.

@@ -26,7 +26,7 @@ Para gerar uma cópia independente que abre com dois cliques, sem instalar ferra
 npm run export
 ```
 
-O arquivo fica em `exports/team-hawks.html`, com as imagens, fontes, estilos e animações embutidos. A versão atual abre sem servidor e sem internet; links externos precisam de conexão. Vídeos futuros não são embutidos automaticamente nesse arquivo: para clipes locais, use a versão publicada/servida com a pasta de mídia. `dist/`, `exports/`, dependências e resultados de testes não são versionados.
+O arquivo fica em `exports/team-hawks.html`, com imagens, fontes, estilos, animações e os cinco vídeos locais embutidos. Abre com dois cliques, sem servidor ou internet; links externos precisam de conexão. O tamanho inclui todos os arquivos de mídia. `dist/`, `exports/`, dependências e resultados de testes não são versionados.
 
 ## Cinco vídeos — ainda não fornecidos
 

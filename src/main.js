@@ -118,6 +118,8 @@ for (const [key, spec] of Object.entries(content.media)) {
   const imageURL = mediaURL(spec.image);
   if (!slot || !imageURL) continue;
   const image = $('img', slot);
+  // Pending photo slots have captions but no image to configure.
+  if (!image) continue;
   const fallback = image.src;
   listen(image, 'error', () => { if (image.src !== fallback) image.src = fallback; });
   image.src = imageURL;
@@ -313,7 +315,7 @@ function buildMotion() {
         .fromTo('.hero-morph', { autoAlpha: 0, y: 120, scale: .85 }, { autoAlpha: 1, y: 0, scale: 1, duration: .3 }, .7);
 
       const diagram = $('[data-court-diagram]');
-      if (!diagram.dataset.routePlayed) {
+      if (diagram) {
         const segments = $$('[data-route-segment]', diagram);
         const nodes = $$('[data-route-node]', diagram);
         segments.forEach((path) => {
@@ -322,8 +324,10 @@ function buildMotion() {
         });
         gsap.set(nodes, { opacity: .3 });
         const route = gsap.timeline({
-          scrollTrigger: { trigger: diagram, start: 'top 82%', once: true },
-          onStart: () => { diagram.dataset.routePlayed = 'true'; },
+          scrollTrigger: {
+            trigger: diagram, start: 'top 82%',
+            toggleActions: 'restart none restart reset',
+          },
         });
         route.to(nodes[0], { opacity: 1, duration: .2 });
         segments.forEach((segment, index) => {

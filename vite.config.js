@@ -46,11 +46,11 @@ export default defineConfig({
       order: 'pre',
       handler(html) {
         return html.replace(/<!-- videos:(training|action|events) -->/g, (_, group) => {
-          return readManifest().filter((entry) => entry.group === group).map((entry) => {
+          return readManifest().filter((entry) => entry.group === group).map((entry, index) => {
             const id = escapeHTML(entry.id);
             const ratio = /^(16\s*\/\s*9|9\s*\/\s*16)$/.test(entry.ratio) ? entry.ratio : '16 / 9';
-            return `<article class="video-card" data-video-id="${id}" data-status="pending" aria-labelledby="${id}-title">
-              <div class="video-heading"><span class="eyebrow" aria-hidden="true">${id.slice(-2)}</span><h3 id="${id}-title" class="display">${escapeHTML(entry.title)}</h3></div>
+            return `<article class="video-card" data-video-id="${id}" data-status="pending" aria-labelledby="${group === 'events' ? 'events-videos-title' : `${id}-title`}">
+              ${group === 'events' ? '' : `<div class="video-heading"><span class="eyebrow" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><h3 id="${id}-title" class="display">${escapeHTML(entry.title)}</h3></div>`}
               <div class="video-frame${ratio.trim().startsWith('9') ? ' video-frame--portrait' : ''}" style="--video-ratio:${ratio}"><p class="video-pending">VÍDEO EM BREVE</p></div>
               ${entry.description ? `<p class="video-description">${escapeHTML(entry.description)}</p>` : ''}
             </article>`;

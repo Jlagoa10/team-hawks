@@ -5,7 +5,7 @@ const safeURL = (value) => {
   if (!value) return '';
   try {
     const url = new URL(value, document.baseURI);
-    return url.protocol === 'https:' || url.origin === location.origin ? url.href : '';
+    return url.protocol === 'https:' || value.startsWith('data:video/mp4;base64,') || url.origin === location.origin ? url.href : '';
   } catch { return ''; }
 };
 
