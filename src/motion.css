@@ -521,3 +521,8 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
  .image-stack { height: 420px; }
  .future-media { margin-top: 32px; }
 }
+@media (max-width: 600px) {
+ .hero-morph { position: relative; inset: auto; min-height: 240px; margin-top: 32px; padding: 36px var(--page-gutter); background: var(--color-bone); color: #0a0a0b; }
+ .hero-morph p { font-size: clamp(36px, 11vw, 64px); margin-top: 18px; }
+ .motion-disabled .hero-morph { visibility: visible; }
+}

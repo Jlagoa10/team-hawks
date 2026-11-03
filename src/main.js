@@ -329,6 +329,22 @@ function buildMotion() {
         .to('.hero-media', { width: mobile ? '90%' : '52%', height: '54%', top: '25%', right: mobile ? '5%' : '24%', borderRadius: '50%', opacity: .22, duration: .35, ease: 'power2.inOut' }, .6)
         .fromTo('.hero-morph', { autoAlpha: 0, y: 120, scale: .85 }, { autoAlpha: 1, y: 0, scale: 1, duration: .3 }, .7);
 
+      } else {
+        gsap.from('.hero-intro > .eyebrow, .hero-intro h1, .hero-meta p, .hero-meta .motion-button', {
+          y: 24, autoAlpha: 0, duration: .65, stagger: .1, ease: 'power3.out',
+        });
+        gsap.from('.hero-media', {
+          y: 24, autoAlpha: 0, duration: .8, delay: .25, ease: 'power3.out',
+        });
+        gsap.fromTo('.hero-media img', { scale: 1 }, {
+          scale: 1.16, ease: 'none',
+          scrollTrigger: { trigger: '.hero-media', start: 'top 75%', end: 'bottom top', scrub: .75 },
+        });
+        const welcome = gsap.timeline({
+          scrollTrigger: { trigger: '.hero-morph', start: 'top 85%', end: 'center 45%', scrub: .6 },
+        });
+        welcome.fromTo('.hero-morph', { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 1 })
+          .fromTo('.hero-morph p', { scale: .9 }, { scale: 1, duration: 1 }, 0);
       }
 
       const diagram = $('[data-court-diagram]');
