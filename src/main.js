@@ -307,45 +307,26 @@ function buildMotion() {
   const mobile = mobileQuery.matches;
   try {
     motionContext = gsap.context((context) => {
-      if (!mobile) {
       const hero = gsap.timeline({
         onUpdate: paintHeader,
         scrollTrigger: {
-          trigger: '#inicio', start: 'top top', end: () => `+=${innerHeight * (mobile ? 1.3 : 1.9)}`,
+          trigger: '#inicio', start: 'top top', end: () => `+=${innerHeight * 1.9}`,
           pin: '.hero-stage', scrub: .75, invalidateOnRefresh: true,
         },
       });
       hero.fromTo('.hero-media', {
-        top: () => innerWidth <= 600 ? '36%' : innerWidth < 1024 ? '33%' : '26%',
+        top: () => innerWidth <= 600 ? `${document.querySelector('.hero-intro').offsetHeight + 24}px` : innerWidth < 1024 ? '33%' : '26%',
         right: () => innerWidth < 1024 ? '5%' : '4%',
         width: () => innerWidth <= 600 ? '87%' : innerWidth < 1024 ? '82%' : '64%',
-        height: () => innerWidth <= 600 ? '47%' : innerWidth < 1024 ? '53%' : '66%',
+        height: () => innerWidth <= 600 ? '32%' : innerWidth < 1024 ? '53%' : '66%',
         borderRadius: () => `${innerWidth <= 600 ? 80 : innerWidth < 1024 ? 100 : 180}px 8px 8px 8px`,
       }, { top: 0, right: 0, width: '100%', height: '100%', borderRadius: 0, duration: .5, ease: 'power2.inOut' }, 0)
         .to('.hero-media img, .hero-media video', { scale: 1.16, duration: .55, ease: 'none' }, 0)
         .to('.hero-intro', { yPercent: -35, scale: 1.08, transformOrigin: 'left top', duration: .5 }, 0)
         .to('.hero-intro, .hero-bottom', { autoAlpha: 0, yPercent: -60, duration: .2 }, .4)
         .to('.hero-stage', { backgroundColor: '#edeae5', duration: .25 }, .6)
-        .to('.hero-media', { width: mobile ? '90%' : '52%', height: '54%', top: '25%', right: mobile ? '5%' : '24%', borderRadius: '50%', opacity: .22, duration: .35, ease: 'power2.inOut' }, .6)
+        .to('.hero-media', { width: '52%', height: '54%', top: '25%', right: '24%', borderRadius: '50%', opacity: .22, duration: .35, ease: 'power2.inOut' }, .6)
         .fromTo('.hero-morph', { autoAlpha: 0, y: 120, scale: .85 }, { autoAlpha: 1, y: 0, scale: 1, duration: .3 }, .7);
-
-      } else {
-        gsap.from('.hero-intro > .eyebrow, .hero-intro h1, .hero-meta p, .hero-meta .motion-button', {
-          y: 24, autoAlpha: 0, duration: .65, stagger: .1, ease: 'power3.out',
-        });
-        gsap.from('.hero-media', {
-          y: 24, autoAlpha: 0, duration: .8, delay: .25, ease: 'power3.out',
-        });
-        gsap.fromTo('.hero-media img', { scale: 1 }, {
-          scale: 1.16, ease: 'none',
-          scrollTrigger: { trigger: '.hero-media', start: 'top 75%', end: 'bottom top', scrub: .75 },
-        });
-        const welcome = gsap.timeline({
-          scrollTrigger: { trigger: '.hero-morph', start: 'top 85%', end: 'center 45%', scrub: .6 },
-        });
-        welcome.fromTo('.hero-morph', { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 1 })
-          .fromTo('.hero-morph p', { scale: .9 }, { scale: 1, duration: 1 }, 0);
-      }
 
       const diagram = $('[data-court-diagram]');
       if (diagram) {
@@ -400,8 +381,8 @@ function buildMotion() {
         gsap.to('.method-progress span', { scaleX: (index + 1) / 5, duration: .7, overwrite: true });
       }
       $$('.method-chapter').forEach((chapter, index) => {
-        ScrollTrigger.create({ trigger: chapter, start: mobile ? 'top 68%' : 'top 55%', end: 'bottom 55%', onEnter: () => selectMethod(index), onEnterBack: () => selectMethod(index) });
-        gsap.from($('.chapter-title', chapter), { x: mobile ? 30 : 80, rotation: -4, ease: 'none', scrollTrigger: { trigger: chapter, start: 'top 95%', end: 'top 50%', scrub: .8 } });
+        ScrollTrigger.create({ trigger: chapter, start: 'top 55%', end: 'bottom 55%', onEnter: () => selectMethod(index), onEnterBack: () => selectMethod(index) });
+        gsap.from($('.chapter-title', chapter), { x: 80, rotation: -4, ease: 'none', scrollTrigger: { trigger: chapter, start: 'top 95%', end: 'top 50%', scrub: .8 } });
       });
       selectMethod(0);
 
@@ -415,7 +396,7 @@ function buildMotion() {
         ScrollTrigger.create({ trigger: chapter, start: 'top 60%', end: 'bottom 60%', onEnter: select, onEnterBack: select });
       });
 
-      gsap.fromTo('.editorial-primary', { rotation: -9, y: mobile ? 30 : 150, scale: .84 }, {
+      gsap.fromTo('.editorial-primary', { rotation: -9, y: 150, scale: .84 }, {
         rotation: 3, y: -60, scale: 1.05, ease: 'none',
         scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
@@ -424,13 +405,13 @@ function buildMotion() {
         scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
       $$('.hover-gallery > li').forEach((item, index) => {
-        gsap.fromTo(item, { y: mobile ? 24 : 100 + index % 3 * 40, rotation: mobile ? 0 : index % 2 ? 5 : -5, scale: mobile ? 1 : .86 }, {
+        gsap.fromTo(item, { y: 100 + index % 3 * 40, rotation: index % 2 ? 5 : -5, scale: .86 }, {
           y: 0, rotation: 0, scale: 1, ease: 'none',
           scrollTrigger: { trigger: item, start: 'top bottom', end: 'top 35%', scrub: .8 },
         });
       });
-      gsap.fromTo(stack, { y: mobile ? 24 : 90, rotationY: 0 }, {
-        y: mobile ? 0 : -30, rotationY: 0, force3D: false, ease: 'none',
+      gsap.fromTo(stack, { y: 90, rotationY: 0 }, {
+        y: -30, rotationY: 0, force3D: false, ease: 'none',
         scrollTrigger: { trigger: '.stack-collection', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
 
@@ -446,7 +427,7 @@ function buildMotion() {
       });
       const training = gsap.timeline({
         scrollTrigger: {
-          trigger: '#treino', start: 'top top', end: () => `+=${innerHeight * (mobile ? 1.6 : 2.5)}`,
+          trigger: '#treino', start: 'top top', end: () => `+=${innerHeight * 2.5}`,
           pin: '.training-stage', scrub: .7, invalidateOnRefresh: true,
           onUpdate: (self) => {
             const index = Math.min(2, Math.floor(self.progress * 3));
@@ -462,9 +443,8 @@ function buildMotion() {
           },
         },
       });
-      const compactTraining = trainingCompactQuery.matches;
-      training.fromTo('.training-media', { scale: compactTraining ? 1 : 1.08, xPercent: compactTraining ? 0 : -5 }, { scale: compactTraining ? 1.08 : 1.45, xPercent: compactTraining ? 0 : 5, duration: 1, ease: 'none' })
-        .fromTo('.training-copy', { x: 0 }, { x: mobile ? 0 : 40, duration: 1, ease: 'none' }, 0);
+      training.fromTo('.training-media', { scale: 1.08, xPercent: -5 }, { scale: 1.45, xPercent: 5, duration: 1, ease: 'none' })
+        .fromTo('.training-copy', { x: 0 }, { x: 40, duration: 1, ease: 'none' }, 0);
     });
   } catch (error) {
     motionContext?.revert();

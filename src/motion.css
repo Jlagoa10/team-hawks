@@ -526,3 +526,10 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
  .hero-morph p { font-size: clamp(36px, 11vw, 64px); margin-top: 18px; }
  .motion-disabled .hero-morph { visibility: visible; }
 }
+/* Share desktop scroll choreography; only the initial mobile layout differs. */
+@media (max-width: 600px) {
+ .hero-stage { height: 100svh; min-height: 840px; padding-bottom: 0; }
+ .hero-media { position: absolute; margin: 0; top: 52%; right: 5%; width: 87%; height: 32%; }
+ .hero-bottom { position: absolute; margin: 0; left: var(--page-gutter); right: var(--page-gutter); bottom: 24px; }
+ .hero-morph { position: absolute; inset: 0; min-height: 0; margin: 0; padding: 24px var(--page-gutter); background: transparent; }
+}
