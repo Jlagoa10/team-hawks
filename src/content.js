@@ -1,6 +1,6 @@
 // Photos supplied in the update kit; Instagram remains the official contact.
 export const content = {
-  whatsapp: '',
+  whatsapp: '5511969182478',
   instagramDM: 'https://ig.me/m/team_hawks_futevolei',
   media: {
     coach: { image: 'assets/images/fabio-training-01.webp', alt: 'Fábio Marconi na quadra de futevôlei' },

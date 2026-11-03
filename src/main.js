@@ -86,13 +86,20 @@ listen(window, 'scroll', paintHeader, { passive: true });
 paintHeader();
 
 const messages = {
-  geral: 'Olá, Team Hawks! Vim pelo site e gostaria de conversar.',
-  atleta: 'Olá, Team Hawks! Sou atleta e quero conhecer o Método Team Hawks.',
-  arena: 'Olá, Team Hawks! Represento uma arena/clube e quero conhecer o método.',
-  consultoria: 'Olá, Team Hawks! Quero conhecer a consultoria para o meu projeto.',
-  parceria: 'Olá, Team Hawks! Tenho interesse em ser parceiro do projeto.',
-  turmas: 'Olá, Team Hawks! Quero ser avisado(a) sobre novas turmas e projetos.',
-  aulas: 'Olá, Team Hawks! Quero saber mais sobre as aulas com o Fábio Marconi.',
+  metodo: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero conhecer o Método Team Hawks e entender como ele funciona.',
+  treinadores: 'Olá, Fábio! Conheci o Team Hawks pelo site. Sou professor(a) ou treinador(a) e quero saber mais sobre capacitação e aplicação de uma metodologia estruturada.',
+  profissional: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre o trabalho para profissionais e o aprimoramento dos padrões de movimentação, leitura e execução.',
+  projetos: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre a estruturação de turmas, processos e desenvolvimento de projetos esportivos de futevôlei.',
+  'aulas-segunda-quinta': 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre as aulas de segunda a quinta.',
+  'aulas-sexta': 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre as aulas de sexta-feira.',
+  'aulas-finais-semana': 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre as clínicas e imersões nos finais de semana.',
+  geral: 'Olá, Fábio! Conheci o Team Hawks pelo site e gostaria de conversar.',
+  atleta: 'Olá, Fábio! Conheci o Team Hawks pelo site. Sou atleta e quero saber mais sobre o desenvolvimento técnico e a evolução individual com o Método Team Hawks.',
+  arena: 'Olá, Fábio! Conheci o Team Hawks pelo site. Represento uma arena ou clube e quero saber mais sobre implantação de metodologia, organização técnica e estruturação de projetos.',
+  consultoria: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero conhecer a mentoria e a consultoria Team Hawks e entender como podem ajudar no meu desenvolvimento ou projeto.',
+  parceria: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero ser parceiro do Team Hawks e saber mais sobre as possibilidades de parceria.',
+  turmas: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero ser avisado(a) sobre novas turmas e projetos.',
+  aulas: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre as aulas com o Fábio Marconi.',
 };
 const whatsapp = content.whatsapp.replace(/\D/g, '');
 $$('[data-contact]').forEach((a) => {
@@ -178,9 +185,10 @@ function paintStack(animate = true) {
       xPercent: distance * 8,
       yPercent: distance * -3,
       rotation: distance === 0 ? -4 : distance * 7 - 4,
-      rotationY: distance * -4,
+      rotationY: 0,
       scale: 1 - distance * .055,
-      opacity: distance === 3 ? .4 : 1,
+      opacity: 1,
+      force3D: false,
     };
     if (animate && !reduceQuery.matches) {
       gsap.to(card, { ...properties, duration: .75, ease: 'power3.inOut', overwrite: true });
@@ -402,8 +410,8 @@ function buildMotion() {
           scrollTrigger: { trigger: item, start: 'top bottom', end: 'top 35%', scrub: .8 },
         });
       });
-      gsap.fromTo(stack, { y: 90, rotationY: -18 }, {
-        y: -30, rotationY: 0, ease: 'none',
+      gsap.fromTo(stack, { y: mobile ? 24 : 90, rotationY: 0 }, {
+        y: mobile ? 0 : -30, rotationY: 0, force3D: false, ease: 'none',
         scrollTrigger: { trigger: '.stack-collection', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
 

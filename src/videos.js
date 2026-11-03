@@ -1,6 +1,8 @@
 import manifest from './video-manifest.json';
 import localVideoIDs from 'virtual:team-hawks-videos';
 
+const playIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
+const pauseIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
 const safeURL = (value) => {
   if (!value) return '';
   try {
@@ -13,8 +15,13 @@ export function initVideos(listen) {
   const players = new Set();
   const available = new Set(localVideoIDs);
   const onScreen = new Set();
-  const resume = (video) => {
-    if (!document.hidden && onScreen.has(video)) video.play().catch(() => {});
+  const reset = (video) => {
+    video.pause();
+    if (video.readyState > 0) video.currentTime = 0;
+    const frame = video.closest('.video-frame');
+    frame.querySelector('.video-poster').hidden = false;
+    frame.querySelector('.video-play').innerHTML = playIcon;
+    frame.querySelector('.video-play').setAttribute('aria-label', 'Reproduzir vídeo');
   };
   const loading = new IntersectionObserver((entries) => {
     for (const { target, isIntersecting } of entries) {
@@ -28,17 +35,17 @@ export function initVideos(listen) {
     for (const { target: video, isIntersecting, intersectionRatio } of entries) {
       if (isIntersecting && intersectionRatio >= 0.25) {
         onScreen.add(video);
-        resume(video);
+
       } else {
         onScreen.delete(video);
-        video.pause();
+        reset(video);
       }
     }
   }, { threshold: [0, 0.25] });
-  const pause = () => players.forEach((video) => video.pause());
+  const pause = () => players.forEach(reset);
   listen(document, 'visibilitychange', () => {
     if (document.hidden) pause();
-    else onScreen.forEach(resume);
+
   });
 
   function mountPlayer(card, spec) {
@@ -47,10 +54,44 @@ export function initVideos(listen) {
     const frame = card.querySelector('.video-frame');
     const pending = card.querySelector('.video-pending');
     const video = document.createElement('video');
-    video.controls = true;
+    video.controls = false;
+    video.disablePictureInPicture = true;
+    video.disableRemotePlayback = true;
+    video.setAttribute('controlslist', 'nodownload nofullscreen noremoteplayback');
+    video.poster = new URL('assets/team-hawks-logo.svg', document.baseURI).href;
+    const poster = document.createElement('img');
+    poster.className = 'video-poster';
+    poster.src = video.poster;
+    poster.alt = 'Team Hawks';
+    const play = document.createElement('button');
+    play.type = 'button';
+    play.className = 'video-play';
+    play.innerHTML = playIcon;
+    play.setAttribute('aria-label', 'Reproduzir vídeo');
+    frame.append(poster, play);
+    listen(play, 'click', () => {
+      if (video.paused) {
+        video.play().catch(() => reset(video));
+      } else {
+        video.pause();
+      }
+    });
+    listen(video, 'pause', () => {
+      play.innerHTML = playIcon;
+      play.setAttribute('aria-label', 'Reproduzir vídeo');
+    });
+    listen(video, 'playing', () => {
+      if (document.hidden || !onScreen.has(video)) reset(video);
+      else {
+        poster.hidden = true;
+        play.innerHTML = pauseIcon;
+        play.setAttribute('aria-label', 'Pausar vídeo');
+      }
+    });
+    listen(video, 'ended', () => reset(video));
     video.playsInline = true;
-    video.muted = true;
-    video.defaultMuted = true;
+    video.muted = false;
+    video.defaultMuted = false;
     video.preload = 'metadata';
     video.setAttribute('aria-label', spec.title);
     for (const subtitle of spec.tracks || []) {
@@ -67,6 +108,7 @@ export function initVideos(listen) {
     listen(video, 'loadedmetadata', () => {
       card.dataset.status = 'ready';
       pending.hidden = true;
+
       video.hidden = false;
     });
     listen(video, 'error', () => {
@@ -78,6 +120,8 @@ export function initVideos(listen) {
       onScreen.delete(video);
       players.delete(video);
       video.remove();
+      poster.remove();
+      play.remove();
     });
     card.dataset.status = 'loading';
     pending.hidden = true;
