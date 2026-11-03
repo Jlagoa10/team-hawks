@@ -176,7 +176,7 @@ for (const [index, spec] of (content.gallery || []).slice(0, cards.length).entri
 }
 let stackIndex = 0;
 let touchStart;
-function paintStack(animate = true) {
+function paintStack(animate = !mobileQuery.matches) {
   cards.forEach((card, index) => {
     const distance = (index - stackIndex + cards.length) % cards.length;
     card.style.zIndex = String(cards.length - distance);
@@ -250,9 +250,12 @@ $$('.hover-image').forEach((figure) => {
 listen($('.stack-open'), 'click', () => openImage(cards[stackIndex], $('.stack-open')));
 $$('.spotlight-card, .motion-button').forEach((surface) => {
   let bounds;
-  listen(surface, 'pointerenter', () => { bounds = surface.getBoundingClientRect(); });
+  listen(surface, 'pointerenter', () => {
+    if (mobileQuery.matches || !fineQuery.matches) return;
+    bounds = surface.getBoundingClientRect();
+  });
   listen(surface, 'pointermove', (event) => {
-    if (!fineQuery.matches || reduceQuery.matches) return;
+    if (mobileQuery.matches || !fineQuery.matches || reduceQuery.matches) return;
     bounds ||= surface.getBoundingClientRect();
     const x = event.clientX - bounds.left;
     const y = event.clientY - bounds.top;
@@ -262,6 +265,7 @@ $$('.spotlight-card, .motion-button').forEach((surface) => {
     surface.style.setProperty('--by', `${(y / bounds.height - .5) * 6}px`);
   });
   listen(surface, 'pointerleave', () => {
+    if (mobileQuery.matches || !fineQuery.matches) return;
     bounds = undefined;
     surface.style.setProperty('--bx', '0px');
     surface.style.setProperty('--by', '0px');
@@ -363,6 +367,7 @@ function buildMotion() {
         });
       });
 
+      if (!mobile) {
       let methodStage = -1;
       const methodLabels = $$('.method-chapter h3').map((el) => el.textContent);
       const methodImages = $$('.method-image');
@@ -376,15 +381,31 @@ function buildMotion() {
           xPercent: 0, duration: .8, overwrite: true,
         }));
         gsap.fromTo('[data-method-label]', { y: 22, rotation: -3 }, { y: 0, rotation: 0, duration: .6, overwrite: true });
-        gsap.to('.court-route', { strokeDashoffset: 550 - index * 130, duration: .8, overwrite: true });
         gsap.to('.method-court', { rotation: [-5, 2, -2, 5, 0][index], scale: 1 + index * .03, duration: 1, overwrite: true });
-        gsap.to('.method-progress span', { scaleX: (index + 1) / 5, duration: .7, overwrite: true });
       }
       $$('.method-chapter').forEach((chapter, index) => {
         ScrollTrigger.create({ trigger: chapter, start: 'top 55%', end: 'bottom 55%', onEnter: () => selectMethod(index), onEnterBack: () => selectMethod(index) });
         gsap.from($('.chapter-title', chapter), { x: 80, rotation: -4, ease: 'none', scrollTrigger: { trigger: chapter, start: 'top 95%', end: 'top 50%', scrub: .8 } });
       });
       selectMethod(0);
+      const methodRoute = $('.court-route');
+      const methodChapters = $$('.method-chapter');
+      const routeLength = methodRoute.getTotalLength();
+      gsap.set(methodRoute, { strokeDasharray: routeLength });
+      const methodScroll = gsap.timeline({
+        scrollTrigger: {
+          trigger: methodChapters[0], start: 'top 55%',
+          endTrigger: methodChapters.at(-1), end: 'top 55%',
+          scrub: .15, invalidateOnRefresh: true,
+        },
+      });
+      methodScroll.fromTo(methodRoute, { strokeDashoffset: routeLength * .8 }, {
+        strokeDashoffset: 0, duration: 1, ease: 'none',
+      }, 0).fromTo('.method-progress span', { scaleX: .2 }, {
+        scaleX: 1, duration: 1, ease: 'none',
+      }, 0);
+
+      }
 
       $$('#consultoria [data-consult-stage]').forEach((chapter, index) => {
         const select = () => {
@@ -396,6 +417,7 @@ function buildMotion() {
         ScrollTrigger.create({ trigger: chapter, start: 'top 60%', end: 'bottom 60%', onEnter: select, onEnterBack: select });
       });
 
+      if (!mobile) {
       gsap.fromTo('.editorial-primary', { rotation: -9, y: 150, scale: .84 }, {
         rotation: 3, y: -60, scale: 1.05, ease: 'none',
         scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
@@ -414,7 +436,7 @@ function buildMotion() {
         y: -30, rotationY: 0, force3D: false, ease: 'none',
         scrollTrigger: { trigger: '.stack-collection', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
-
+      }
       const words = ['POSICIONE.', 'LEIA.', 'EXECUTE.'];
       const descriptions = [
         'Chegar melhor à bola começa por uma base consistente.',
