@@ -307,6 +307,7 @@ function buildMotion() {
   const mobile = mobileQuery.matches;
   try {
     motionContext = gsap.context((context) => {
+      if (!mobile) {
       const hero = gsap.timeline({
         onUpdate: paintHeader,
         scrollTrigger: {
@@ -327,6 +328,8 @@ function buildMotion() {
         .to('.hero-stage', { backgroundColor: '#edeae5', duration: .25 }, .6)
         .to('.hero-media', { width: mobile ? '90%' : '52%', height: '54%', top: '25%', right: mobile ? '5%' : '24%', borderRadius: '50%', opacity: .22, duration: .35, ease: 'power2.inOut' }, .6)
         .fromTo('.hero-morph', { autoAlpha: 0, y: 120, scale: .85 }, { autoAlpha: 1, y: 0, scale: 1, duration: .3 }, .7);
+
+      }
 
       const diagram = $('[data-court-diagram]');
       if (diagram) {

@@ -501,3 +501,23 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
 
 .video-play { padding: 0; line-height: 1; appearance: none; -webkit-appearance: none; flex-shrink: 0; }
 .video-play svg { display: block; width: 24px; height: 24px; pointer-events: none; }
+
+/* Mobile opening follows content height so text never overlaps the photo. */
+@media (max-width: 600px) {
+ .hero-stage { height: auto; min-height: 0; padding-bottom: 28px; }
+ .hero-intro { padding-top: 116px; }
+ .hero-intro > .eyebrow { font-size: 10px; line-height: 1.6; letter-spacing: .2em; }
+ .hero-intro h1 { margin-top: 18px; font-size: clamp(36px, 11.2vw, 64px); line-height: 1.16; }
+ .hero-meta { margin-top: 22px; gap: 20px; align-items: flex-start; }
+ .hero-meta p { max-width: 100%; font-size: 13px; line-height: 1.7; }
+ .hero-meta .motion-button { margin-top: 0; max-width: 100%; min-height: 48px; padding: 14px 18px; font-size: 10px; }
+ .hero-media { position: relative; top: auto; right: auto; width: auto; height: clamp(260px, 85vw, 420px); margin: 28px var(--page-gutter) 0; border-radius: 64px 8px 8px 8px; }
+ .hero-bottom { position: relative; left: auto; right: auto; bottom: auto; margin: 24px var(--page-gutter) 0; padding-top: 16px; }
+ .section-y { padding-block: 64px; }
+ .method-layout { margin-top: 32px; }
+ .schedule-grid { margin-top: 28px; }
+ .schedule-day { gap: 24px; padding: 24px; }
+ .stack-collection { margin-top: 40px; padding-top: 40px; }
+ .image-stack { height: 420px; }
+ .future-media { margin-top: 32px; }
+}
