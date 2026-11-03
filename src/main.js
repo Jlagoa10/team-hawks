@@ -92,6 +92,7 @@ const messages = {
   consultoria: 'Olá, Team Hawks! Quero conhecer a consultoria para o meu projeto.',
   parceria: 'Olá, Team Hawks! Tenho interesse em ser parceiro do projeto.',
   turmas: 'Olá, Team Hawks! Quero ser avisado(a) sobre novas turmas e projetos.',
+  aulas: 'Olá, Team Hawks! Quero saber mais sobre as aulas com o Fábio Marconi.',
 };
 const whatsapp = content.whatsapp.replace(/\D/g, '');
 $$('[data-contact]').forEach((a) => {
