@@ -86,6 +86,7 @@ listen(window, 'scroll', paintHeader, { passive: true });
 paintHeader();
 
 const messages = {
+  condominios: 'Olá, Fábio! Conheci o projeto de futevôlei para condomínios pelo site. Quero levar o Team Hawks ao meu condomínio e saber como funciona.',
   metodo: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero conhecer o Método Team Hawks e entender como ele funciona.',
   treinadores: 'Olá, Fábio! Conheci o Team Hawks pelo site. Sou professor(a) ou treinador(a) e quero saber mais sobre capacitação e aplicação de uma metodologia estruturada.',
   profissional: 'Olá, Fábio! Conheci o Team Hawks pelo site. Quero saber mais sobre o trabalho para profissionais e o aprimoramento dos padrões de movimentação, leitura e execução.',

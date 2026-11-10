@@ -624,3 +624,26 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
   object-fit: cover;
   object-position: center;
 }
+
+/* Condominium service overview. */
+.condo-section { background: #161617; color: #f3f1ec; }
+.condo-layout { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(36px, 7vw, 110px); align-items: center; }
+.condo-copy > .eyebrow { color: #b8bbc1; }
+.condo-copy h2 { font-size: clamp(40px, 5.8vw, 84px); line-height: 1.05; margin-top: 24px; }
+.condo-intro { max-width: 510px; margin-top: 28px; color: #b8bbc1; font-size: 16px; line-height: 1.8; }
+.condo-services { list-style: none; margin: 32px 0; padding: 0; }
+.condo-services li { display: grid; grid-template-columns: 28px 1fr; gap: 18px; padding: 18px 0; border-top: 1px solid #ffffff26; }
+.condo-services li > span { padding-top: 4px; color: #8d9097; }
+.condo-services h3 { font-size: 17px; font-weight: 700; }
+.condo-services p { margin-top: 6px; max-width: 420px; color: #b8bbc1; font-size: 14px; line-height: 1.7; }
+.condo-copy .motion-button { max-width: 100%; font-size: 12px; }
+.condo-photo { margin: 0; }
+.condo-photo img { display: block; width: 100%; height: auto; }
+.condo-photo figcaption { margin-top: 18px; color: #b8bbc1; line-height: 1.7; }
+@media (max-width: 767px) {
+ .condo-layout { grid-template-columns: 1fr; gap: 36px; }
+ .condo-copy h2 { font-size: clamp(38px, 9vw, 60px); }
+ .condo-intro { font-size: 14px; }
+ .condo-copy .motion-button { font-size: 10px; gap: 12px; }
+ .condo-photo img { aspect-ratio: auto; height: auto; }
+}
