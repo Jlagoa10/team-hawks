@@ -5,7 +5,7 @@ export const content = {
   media: {
     coach: { image: 'assets/images/fabio-training-01.webp', alt: 'Fábio Marconi na quadra de futevôlei' },
     team: { image: '', alt: '' },
-    events: { image: 'assets/images/team-group.webp', alt: 'Integrantes do Team Hawks reunidos na quadra de areia' },
+    events: { image: 'assets/images/trofeu.jpg', alt: 'Fábio Marconi com atletas e troféus de futevôlei' },
   },
   // Up to four approved images for the interactive stack, in display order.
   // Example: { image: '/media/time-01.webp', caption: 'Team Hawks na areia', alt: 'Descrição da foto' }

@@ -590,3 +590,37 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
  .schedule-card > .schedule-day:hover { box-shadow: none; }
  a:hover > svg, button:hover > svg { transform: none; translate: none; scale: none; }
 }
+/* Show the supplied photos edge to edge at their original proportions. */
+#em-acao .hover-gallery > li > .documentary-frame,
+#em-acao .future-media > .documentary-frame {
+  height: auto;
+  min-height: 0;
+  align-self: start;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+#em-acao .hover-gallery .documentary-frame img,
+#em-acao .future-media .documentary-frame img {
+  position: static;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: cover;
+  background: transparent;
+}
+/* Match the two documentary photos without adding borders or letterboxing. */
+#em-acao .future-media > .documentary-frame {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  height: auto;
+}
+#em-acao .future-media .documentary-frame img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center;
+}
