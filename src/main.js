@@ -428,7 +428,7 @@ function buildMotion() {
         scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
       });
       $$('.hover-gallery > li').forEach((item, index) => {
-        gsap.fromTo(item, { y: 100 + index % 3 * 40, rotation: index % 2 ? 5 : -5, scale: .86 }, {
+        gsap.fromTo(item, { y: 40, rotation: 0, scale: 1 }, {
           y: 0, rotation: 0, scale: 1, ease: 'none',
           scrollTrigger: { trigger: item, start: 'top bottom', end: 'top 35%', scrub: .8 },
         });
@@ -481,9 +481,10 @@ listen(mobileQuery, 'change', buildMotion);
 listen(trainingCompactQuery, 'change', buildMotion);
 buildMotion();
 document.fonts.ready.then(requestRefresh);
-// Image/video frames reserve their size in CSS. Lazy decoding must not refresh
-// ScrollTrigger and interrupt a native smooth anchor scroll mid-flight.
+// Refresh only when the gallery actually changes size, not on every media load.
 listen(window, 'load', requestRefresh);
+const gallerySizeObserver = new ResizeObserver(requestRefresh);
+gallerySizeObserver.observe($('#em-acao'));
 // BFCache/teardown never leaves duplicate pins, observers or live media behind.
 function teardown() {
   if (destroyed) return;
@@ -493,6 +494,7 @@ function teardown() {
   cancelAnimationFrame(refreshFrame);
   videos.destroy();
   marqueeObserver.disconnect();
+  gallerySizeObserver.disconnect();
   $$('video').forEach((video) => video.pause());
   listeners.splice(0).forEach((remove) => remove());
 }
