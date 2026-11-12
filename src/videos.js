@@ -76,6 +76,11 @@ export function initVideos(listen) {
         video.pause();
       }
     });
+    listen(video, 'play', () => {
+      players.forEach((other) => {
+        if (other !== video) reset(other);
+      });
+    });
     listen(video, 'pause', () => {
       play.innerHTML = playIcon;
       play.setAttribute('aria-label', 'Reproduzir vídeo');

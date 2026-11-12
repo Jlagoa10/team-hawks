@@ -188,7 +188,7 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
 .video-pending { position: absolute; inset: auto 0 0; display: flex; align-items: center; justify-content: center; padding: 28px 15px 24px; color: white; background: linear-gradient(transparent,#000d); font-size: 11px; font-weight: 700; letter-spacing: .2em; pointer-events: none; text-align: center; }
 .video-description { margin-top: 15px; color: #bbb; line-height: 1.6; font-size: 14px; }
 .video-events { width: 100%; max-width: 850px; margin-inline: auto; }
-.video-events .video-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.video-events .video-grid { grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: clamp(48px, 8vw, 112px); row-gap: 48px; }
 #treino > .video-section { padding-block: 75px; border-top: 1px solid #ffffff25; }
 .image-viewer { width: min(1200px,96vw); max-width: 96vw; max-height: 96svh; margin: auto; padding: 50px 20px 20px; color: #f2f2f0; background: #101010; border: 1px solid #ffffff55; overflow: auto; }
 .image-viewer::backdrop { background: #000d; }
