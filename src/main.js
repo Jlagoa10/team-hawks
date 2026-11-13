@@ -195,7 +195,7 @@ function paintStack(animate = !mobileQuery.matches) {
       gsap.to(card, { ...properties, duration: .75, ease: 'power3.inOut', overwrite: true });
     } else gsap.set(card, properties);
   });
-  $('[data-stack-status]').textContent = `${String(stackIndex + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')} — ${$('figcaption', cards[stackIndex]).textContent}`;
+  $('[data-stack-status]').textContent = `${String(stackIndex + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}: ${$('figcaption', cards[stackIndex]).textContent}`;
 }
 function changeStack(direction) {
   stackIndex = (stackIndex + direction + cards.length) % cards.length;
