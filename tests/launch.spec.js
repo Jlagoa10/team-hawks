@@ -34,13 +34,30 @@ test('launch: production discovery, privacy, 404 and image assets', async ({page
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://teamhawksfutevolei.com/');
   expect(await page.locator('meta[property="og:image"]').getAttribute('content')).toContain('https://teamhawksfutevolei.com/');
   const assets = await page.locator('img[src],link[rel="icon"]').evaluateAll(nodes => nodes.map(n => n.getAttribute('src') || n.getAttribute('href')));
-  for(const url of new Set([...assets,'/robots.txt','/sitemap.xml','/privacidade.html','/404.html','/assets/team-hawks-share-v2.png'])) {
+  for(const url of new Set([...assets,'/robots.txt','/sitemap.xml','/privacidade.html','/404.html','/assets/team-hawks-share-v3.jpg'])) {
     const response=await request.get(url); expect(response.ok(),url).toBe(true);
   }
   await page.goto('/privacidade.html');
   await expect(page.getByRole('heading',{level:1})).toHaveText('Privacidade e cookies');
   await page.goto('/404.html');
   await expect(page.getByRole('heading',{level:1})).toHaveText('Página não encontrada');
+});
+test('sharing: crawler gets metadata before the body and a real JPEG without JavaScript',async({request})=>{
+  for(const path of ['/','/compartilhar/']) {
+    const response=await request.get(path,{headers:{'User-Agent':'WhatsApp/2.24.7.81 A'}});
+    expect(response.status()).toBe(200);
+    const html=await response.text();
+    expect(html.match(/property="og:title"/g)).toHaveLength(1);
+    expect(html.slice(0,2048)).toContain('property="og:description"');
+    const image=html.match(/property="og:image" content="([^"]+)"/)[1];
+    const media=await request.get(new URL(image).pathname);
+    expect(media.status()).toBe(200);
+    expect(media.headers()['content-type']).toContain('image/jpeg');
+    const bytes=await media.body();
+    expect([...bytes.subarray(0,3)]).toEqual([255,216,255]);
+    expect(bytes.length).toBeLessThan(100000);
+    if(path==='/compartilhar/')expect(html).not.toContain('redirect-home.js');
+  }
 });
 test('launch: supplied videos play by user action and pause offscreen', async ({page}) => {
   await page.emulateMedia({reducedMotion:'reduce'});
