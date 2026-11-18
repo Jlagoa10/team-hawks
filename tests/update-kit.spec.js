@@ -8,10 +8,10 @@ test('all requested photographs and hero copy are assigned to the specified sect
   await expect(page.locator('#manifesto')).toContainText('A técnica começa pelos pés.');
   for (const image of await page.locator('[data-stage-image]').all()) await expect(image).toHaveAttribute('src', /method-court\.webp/);
   await expect(page.locator('.editorial-primary img')).toHaveAttribute('src', /fabio-editorial\.webp/);
-  await expect(page.locator('[data-media-slot="team"] img')).toHaveAttribute('src', /team-action\.webp/);
-  await expect(page.locator('[data-media-slot="events"] img')).toHaveAttribute('src', /team-group\.webp/);
+  await expect(page.locator('.hover-gallery [data-media-slot="team"] img')).toHaveAttribute('src', /fabio-torneio\.jpeg/);
+  await expect(page.locator('[data-media-slot="events"] img')).toHaveAttribute('src', /trofeu\.jpg/);
   await expect(page.locator('#contato img')).toHaveAttribute('src', /contact-eagle\.webp/);
-  await expect(page.locator('.future-media')).not.toContainText('em breve');
+  await expect(page.locator('.hover-gallery')).not.toContainText('em breve');
   await expect(page.locator('.editorial-secondary')).not.toContainText('em breve');
 });
 
@@ -75,11 +75,12 @@ test('Partner cards exclude Lauton and the JLK coupon preserves exact capitaliza
 
 test('gallery opens uncropped photos in a keyboard accessible viewer', async ({ page }) => {
   await page.goto('/');
-  const figure = page.locator('[data-media-slot="events"]');
+  await expect(page.locator('.hover-gallery > li > figure')).toHaveCount(6);
+  const figure = page.locator('.hover-gallery [data-media-slot="events"]');
   await figure.focus();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.locator('.image-viewer img')).toHaveAttribute('src', /team-group\.webp/);
+  await expect(page.locator('.image-viewer img')).toHaveAttribute('src', /trofeu\.jpg/);
   await expect(page.locator('.image-viewer img')).toHaveCSS('object-fit', 'contain');
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toBeHidden();
