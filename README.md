@@ -76,7 +76,7 @@ Os 14 arquivos foram otimizados para WebP, sem reconstruir pessoas ou alterar o 
 
 As composições conceituais estão identificadas separadamente dos registros do time. A galeria e o carrossel permitem abrir as imagens completas em um diálogo acessível, sem recortar pessoas. Não foram inventados nomes, datas ou resultados de eventos.
 
-[Configure fotos e contato em `src/content.js`](src/content.js). O contato continua no Direct oficial do Instagram; WhatsApp permanece vazio até haver um número oficial. Os parceiros LJ Cruz, Emme e Lauton foram preservados. JLK Web & Digital Services oferece 5% de desconto para clientes indicados por Fábio, com o cupom **Hawks05**; o cupom Lauton **TEAMHAWKS** continua independente.
+[Configure fotos e contato em `src/content.js`](src/content.js). O contato continua no Direct oficial do Instagram; WhatsApp permanece vazio até haver um número oficial. Os parceiros atuais são LJ Cruz, Emme e JLK Web & Digital Services.
 
 ## Verificação
 

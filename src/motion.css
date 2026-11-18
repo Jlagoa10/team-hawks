@@ -195,8 +195,8 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
 .image-viewer img { width: 100%; max-height: 78svh; object-fit: contain; }
 .image-viewer figcaption { padding-top: 15px; line-height: 1.5; font-size: 12px; text-align: center; }
 .viewer-close { position: absolute; right: 20px; top: 12px; padding: 8px 15px; border: 1px solid #ffffff60; font-size: 12px; cursor: pointer; }
-@media (min-width: 640px) { .partner-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
-@media (min-width: 1024px) { .partner-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } .partner-grid > li { padding-inline: 23px; } }
+@media (min-width: 640px) { .partner-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@media (min-width: 1024px) { .partner-grid > li { padding-inline: 23px; } }
 @media (min-width: 1024px) and (max-height: 850px) {
  .consult-sticky h2 { font-size: 42px; }
  .consult-sticky p.text-lg { font-size: 14px; margin-top: 22px; }

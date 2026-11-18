@@ -54,12 +54,12 @@ test('court route draws BASE to LEITURA to CHEGADA to target once; pause shows i
   await expect(diagram.locator('title')).toHaveText('Esquema ilustrativo de padrão de deslocamento');
 });
 
-test('JLK and Lauton coupons stay independent and preserve exact capitalization', async ({ page }) => {
+test('Partner cards exclude Lauton and the JLK coupon preserves exact capitalization', async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { value: { writeText: async (value) => { window.copiedCoupon = value; } } });
   });
   await page.goto('/');
-  await expect(page.locator('.partner-grid > li')).toHaveCount(4);
+  await expect(page.locator('.partner-grid > li')).toHaveCount(3);
   const jlk = page.locator('[data-partner="jlk"]');
   await expect(jlk).toContainText('condições especiais');
   await expect(jlk).not.toContainText('5%');
@@ -68,8 +68,8 @@ test('JLK and Lauton coupons stay independent and preserve exact capitalization'
   await page.getByRole('button', { name: 'Copiar cupom HAWKSJLK', exact: true }).click();
   expect(await page.evaluate(() => window.copiedCoupon)).toBe('HAWKSJLK');
   await expect(jlk.locator('[aria-live]')).toHaveText('Copiado');
-  await page.getByRole('button', { name: 'Copiar cupom TEAMHAWKS', exact: true }).click();
-  expect(await page.evaluate(() => window.copiedCoupon)).toBe('TEAMHAWKS');
+  await expect(page.getByRole('button', { name: 'Copiar cupom TEAMHAWKS', exact: true })).toHaveCount(0);
+  await expect(page.locator('#parceiros')).not.toContainText(/lauton/i);
   await expect(page.locator('.marquee-track')).toContainText('JLK WEB & DIGITAL SERVICES');
 });
 
