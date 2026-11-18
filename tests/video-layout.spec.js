@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 for (const width of [1337, 390]) {
-  test(`video loading preserves layout before the pinned training scene at ${width}px`, async ({ page }) => {
+  test(`event videos follow the training videos without shifting on load at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 650 });
     await page.route('**/src/video-manifest.json*', async route => {
       const response = await route.fetch();
@@ -16,19 +16,17 @@ for (const width of [1337, 390]) {
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
     const events = page.locator('.video-events');
+    const training = page.locator('#treino > .video-section > [data-video-group="training"]');
+    await expect(training.locator('.video-card')).toHaveCount(3);
+    await expect(page.locator('#treino > .video-section > [data-video-group="training"] + .video-events .video-card')).toHaveCount(2);
     const before = await events.boundingBox();
     await events.scrollIntoViewIfNeeded();
     await expect(events.locator('video')).toHaveCount(2);
     await expect.poll(async () => (await events.boundingBox()).width).toBeCloseTo(before.width, 0);
     expect((await events.boundingBox()).height).toBeCloseTo(before.height, 0);
-    await page.locator('.training-stage').evaluate(element => {
-      scrollTo({ top: element.getBoundingClientRect().top + scrollY + 500, behavior: 'instant' });
-    });
-    await expect.poll(async () => (await events.boundingBox()).y + (await events.boundingBox()).height).toBeLessThan(0);
-    await expect.poll(() => page.locator('.training-stage').evaluate(element => {
-      const rect = element.getBoundingClientRect();
-      return document.elementFromPoint(rect.width / 2, 200)?.closest('.training-stage') !== null;
-    })).toBe(true);
+    const trainingBox = await training.boundingBox();
+    const eventsBox = await events.boundingBox();
+    expect(eventsBox.y).toBeGreaterThanOrEqual(trainingBox.y + trainingBox.height);
   });
 }
 

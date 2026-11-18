@@ -699,7 +699,7 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
 #em-acao .future-media { width: 100%; margin-top: 32px; gap: 24px; align-items: start; }
 #em-acao .future-media > .documentary-frame { aspect-ratio: 3 / 4; }
 #em-acao .future-media .documentary-frame img { height: 100%; object-fit: cover; }
-#em-acao .video-events { padding-top: 48px; }
+#treino .video-events { padding-top: 48px; }
 @media (max-width: 1023px) {
   #em-acao .hover-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   #em-acao .stack-collection { display: grid; grid-template-columns: minmax(0, 1fr); }
@@ -717,7 +717,7 @@ footer a { max-width: 100%; overflow-wrap: anywhere; }
   #em-acao .stack-collection { margin-top: 40px; padding-top: 40px; row-gap: 16px; }
   #em-acao .image-stack { height: 400px; }
   #em-acao .future-media { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; gap: 12px; }
-  #em-acao .video-events { padding-top: 32px; }
+  #treino .video-events { padding-top: 32px; }
 }
 #em-acao .instagram-gallery-logo { position: static; inset: auto; z-index: auto; }
 #em-acao .instagram-gallery-card::after { display: none; }
