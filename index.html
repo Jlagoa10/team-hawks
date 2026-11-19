@@ -408,38 +408,37 @@
 </div>
 </div>
 </section><section aria-labelledby="coach-title" class="sand-texture section-y relative text-ink" data-motion="04 08 09" id="team-hawks">
-<div class="shell grid gap-14 lg:grid-cols-12 lg:gap-10 people-layout">
-<div class="lg:col-span-5">
+<div class="shell people-layout">
+<div class="coach-portrait">
 <div aria-expanded="false" aria-label="Ampliar: Fábio Marconi · editorial" class="mask-reveal relative bg-ink editorial-primary hover-image" role="button" tabindex="0">
 <picture>
-<img alt="Composição editorial em preto e branco de Fábio Marconi jogando futevôlei" class="aspect-[4/5] w-full object-cover sm:aspect-[638/845]" decoding="async" fetchpriority="auto" height="1448" loading="lazy" src="/assets/images/fabio-editorial.webp" width="1086"/>
+<img alt="Composição editorial em preto e branco de Fábio Marconi jogando futevôlei" class="w-full" decoding="async" fetchpriority="auto" height="1448" loading="lazy" src="/assets/images/fabio-editorial.webp" width="1086"/>
 </picture>
 
 </div>
-<div aria-expanded="false" aria-label="Ampliar: Fábio Marconi na quadra" class="editorial-secondary media-slot hover-image" data-media-slot="coach" role="button" tabindex="0"><img alt="Fábio Marconi com uma bola na quadra de futevôlei" height="1600" loading="lazy" src="/assets/images/fabio-training-01.webp" width="1200"/></div></div>
-<div class="flex flex-col lg:col-span-7 lg:pl-6">
+</div>
+<div class="coach-copy flex flex-col">
 
 <div class="reveal">
-<h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.4rem)] text-umber" id="coach-title">
+<h2 class="display text-[clamp(2.4rem,5vw,4.4rem)] text-umber" id="coach-title">
                 Por trás do método
               </h2>
-<p class="display mt-2 text-[clamp(3.6rem,10vw,8.5rem)]">
+<p class="coach-name display mt-2">
                 Fábio
                 <br/>
                 Marconi
               </p>
 </div>
-<div class="reveal mt-10 grid gap-8 sm:grid-cols-2">
-<p class="text-lg leading-relaxed text-ink/80"><span class="desktop-copy">
+<div class="reveal grid gap-8 text-lg leading-relaxed text-ink/80 sm:grid-cols-2">
+<p><span class="desktop-copy">
                 Treinador e responsável técnico do Team Hawks, Fábio Marconi está à frente da Metodologia de Ensino Team
                 Hawks.
               </span><span class="mobile-copy">Fábio Marconi, treinador e criador da metodologia Team Hawks.</span></p>
-<p class="mobile-hide leading-relaxed text-ink/70">
-                Um trabalho que parte da movimentação e do posicionamento para chegar à leitura de jogo, à tomada de
-                decisão e à evolução técnica progressiva de cada atleta.
+<p class="mobile-hide">
+                O treino aprimora movimentação, posicionamento e leitura de jogo para melhorar as decisões de cada atleta.
               </p>
 </div>
-<div class="reveal mt-10">
+<div class="coach-links reveal">
 <a class="group inline-flex items-center justify-center font-extrabold tracking-[0.16em] uppercase transition-[background-color,box-shadow,color] duration-300 ease-hawk min-h-13 gap-3 px-6 py-3.5 text-[0.78rem] sm:px-7 text-ink ring-1 ring-inset ring-ink/30 hover:ring-ink hover:bg-ink/5 motion-button" data-motion="12" href="https://www.instagram.com/fabiomarconi07_ftv/" rel="noopener noreferrer" target="_blank">
 <svg aria-hidden="true" class="size-4" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
 <rect height="18" rx="5" width="18" x="3" y="3"></rect>
@@ -452,15 +451,7 @@
 <path d="M7 17 17 7"></path>
 </svg>
 </a>
-</div>
-<div class="reveal mt-auto border-t-2 border-ink pt-10 max-lg:mt-16">
-<p class="eyebrow text-umber">Time de Alta Performance de Futevôlei</p>
-<p class="display mt-5 text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.02] team-family-heading" data-family-heading="">
-<span class="block">Mais que um time.</span>
-<span class="block text-outline-ink">Uma família.</span>
-<span class="block">Um propósito.</span>
-</p>
-<ul class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm font-bold">
+<ul class="mt-5 flex flex-wrap gap-x-8 gap-y-3 text-sm font-bold">
 <li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
 <a class="link-underline inline-flex w-fit items-center gap-2 pb-0.5" href="https://www.instagram.com/arenapenaareia/" rel="noopener noreferrer" target="_blank">
 <svg aria-hidden="true" class="size-4" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
@@ -606,7 +597,8 @@
               </p>
 </div>
 </div>
-<ul class="hover-gallery">
+<div class="photo-carousel" data-media-carousel role="region" aria-label="Fotos do Team Hawks">
+<ul class="hover-gallery media-track" id="team-photos" tabindex="0" aria-label="Fotos da galeria">
 <li class="reveal break-inside-avoid">
 <figure aria-expanded="false" aria-label="Ampliar: Fábio Marconi na quadra de futevôlei" class="group relative overflow-hidden bg-graphite hover-image documentary-frame" data-image-ratio="landscape" role="button" tabindex="0">
 <img alt="Fábio Marconi na quadra de futevôlei" class="w-full object-cover" decoding="async" width="1280" height="1024" loading="lazy" src="/assets/images/fabio-nfp.jpeg"/>
@@ -638,7 +630,10 @@
 <li class="reveal break-inside-avoid">
 <figure aria-expanded="false" aria-label="Ampliar: Conquistas na areia" class="media-slot hover-image documentary-frame" data-media-slot="events" role="button" tabindex="0"><img alt="Fábio Marconi com atletas e troféus de futevôlei" height="1920" loading="lazy" src="/assets/images/trofeu.jpg" width="1440"/></figure>
 </li>
-<li class="reveal break-inside-avoid">
+</ul>
+<button class="media-carousel-arrow" data-media-step="-1" type="button" aria-label="Fotos anteriores" aria-controls="team-photos" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4 8 12l8 8"/></svg></button>
+<button class="media-carousel-arrow" data-media-step="1" type="button" aria-label="Próximas fotos" aria-controls="team-photos" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4l8 8-8 8"/></svg></button>
+</div>
 <a class="instagram-gallery-card group flex aspect-[4/3] flex-col justify-between p-6 ring-1 ring-inset ring-white/15 transition-colors duration-500 hover:bg-bone hover:text-ink" href="https://www.instagram.com/team_hawks_futevolei/" rel="noopener noreferrer" target="_blank">
 <span class="flex items-center justify-between">
 <svg aria-hidden="true" class="size-6" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
@@ -655,10 +650,9 @@
 <span class="mt-2 block text-sm font-bold">@team_hawks_futevolei</span>
 </span>
 </a>
-</li>
-</ul>
-<div aria-label="Identidade e registros Team Hawks" aria-roledescription="carrossel" class="stack-collection" data-motion="08" role="region"><div class="stack-heading"><p class="eyebrow">Nossa identidade. Nossa história.</p><h3 class="display">MAIS QUE UM TIME.</h3><p>Pessoas e encontros que fazem parte da nossa história.</p><div class="stack-story"><h4>A conexão vai além da areia.</h4><p>Cada treino aproxima. Cada encontro vira memória. É assim que o Team Hawks constrói sua história: com parceria, amizade e vontade de evoluir juntos.</p></div></div><div aria-label="Galeria de imagens. Use as setas para navegar." class="image-stack" tabindex="0"><figure aria-hidden="false" class="stack-card" data-stack-card="0"><img alt="Grupo reunido em um encontro do Team Hawks" height="1600" loading="lazy" src="/assets/images/team-event-01.webp" width="1200"/><figcaption>Encontro do Team Hawks</figcaption></figure><figure aria-hidden="true" class="stack-card" data-stack-card="1"><img alt="Integrantes do grupo reunidos em uma mesa" height="1600" loading="lazy" src="/assets/images/team-event-02.webp" width="1200"/><figcaption>Momentos fora da areia</figcaption></figure><figure aria-hidden="true" class="stack-card" data-stack-card="2"><img alt="Fábio Marconi com bolas na quadra de futevôlei" height="1600" loading="lazy" src="/assets/images/fabio-training-02.webp" width="1200"/><figcaption>Fábio na quadra</figcaption></figure><figure aria-hidden="true" class="stack-card" data-stack-card="3"><img alt="Grupo Team Hawks na quadra de areia" height="1280" loading="lazy" src="/assets/images/team-group.webp" width="960"/><figcaption>Nosso time</figcaption></figure></div><div class="stack-controls"><button aria-label="Imagem anterior" data-stack-prev="" type="button"><svg aria-hidden="true" fill="none" height="22" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="22"><path d="M19 12H5m7 7-7-7 7-7"></path></svg></button><p aria-live="polite" data-stack-status="">01 / 04: Encontro do Team Hawks</p><button aria-label="Próxima imagem" data-stack-next="" type="button"><svg aria-hidden="true" fill="none" height="22" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="22"><path d="M5 12h14m-7-7 7 7-7 7"></path></svg></button><button aria-label="Ver imagem atual em tamanho completo" class="stack-open" type="button"><svg aria-hidden="true" fill="none" height="20" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="20"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M3 3l6 6m12-6-6 6M3 21l6-6m12 6-6-6"></path></svg></button></div></div></div>
-</section><section aria-labelledby="treino-title" class="training-section" data-motion="03 05" id="treino"><div class="training-stage"><div class="training-media media-slot" data-media-slot="training"><img alt="Composição visual de futevôlei junto à rede" height="1024" loading="lazy" src="/assets/images/footvolley-action-optimized.webp" width="1536"/></div><div class="training-shade"></div><div class="training-copy"><p class="eyebrow">Disciplina dentro da areia / <span data-training-index="">01</span></p><h2 class="display" id="treino-title"><span data-training-word="">POSICIONE.</span></h2><p data-training-description="">Chegar melhor à bola começa por uma base consistente.</p></div><div class="training-bottom"><div aria-hidden="true" class="training-dots"><i class="active"></i><i></i><i></i></div></div></div><div class="training-transcript"><h3>Sequência técnica</h3><ol><li>Posicione. Chegar melhor à bola começa por uma base consistente.</li><li>Leia. Entenda a trajetória antes de escolher o movimento.</li><li>Execute. Transforme a decisão em um fundamento eficiente.</li></ol></div><div class="shell video-section"><div class="video-grid" data-video-group="training"><!-- videos:training --></div><div class="video-section video-events" aria-labelledby="events-videos-title"><h3 class="display events-videos-title" id="events-videos-title">EVENTOS E BASTIDORES</h3><div class="video-grid" data-video-group="events"><!-- videos:events --></div></div></div></section><section aria-labelledby="consultoria-title" class="grain relative bg-ink" data-motion="07 10" id="consultoria">
+<div aria-label="Identidade e registros Team Hawks" aria-roledescription="carrossel" class="stack-collection" data-motion="08" role="region"><div class="stack-heading"><p class="eyebrow">Nossa identidade. Nossa história.</p><h3 class="display">MAIS QUE UM TIME.</h3><p>Pessoas e encontros que fazem parte da nossa história.</p><div class="stack-story"><h4>A conexão vai além da areia.</h4><p>Cada treino aproxima. Cada encontro vira memória. É assim que o Team Hawks constrói sua história: com parceria, amizade e vontade de evoluir juntos.</p></div></div><div aria-label="Galeria de imagens. Use as setas para navegar." class="image-stack" tabindex="0"><figure aria-hidden="false" class="stack-card" data-stack-card="0"><img alt="Grupo reunido em um encontro do Team Hawks" height="1600" loading="lazy" src="/assets/images/team-event-01.webp" width="1200"/><figcaption>Encontro do Team Hawks</figcaption></figure><figure aria-hidden="true" class="stack-card" data-stack-card="1"><img alt="Integrantes do grupo reunidos em uma mesa" height="1600" loading="lazy" src="/assets/images/team-event-02.webp" width="1200"/><figcaption>Momentos fora da areia</figcaption></figure><figure aria-hidden="true" class="stack-card" data-stack-card="2"><img alt="Fábio Marconi com bolas na quadra de futevôlei" height="1600" loading="lazy" src="/assets/images/fabio-training-02.webp" width="1200"/><figcaption>Fábio na quadra</figcaption></figure><figure aria-hidden="true" class="stack-card" data-stack-card="3"><img alt="Grupo Team Hawks na quadra de areia" height="1280" loading="lazy" src="/assets/images/team-group.webp" width="960"/><figcaption>Nosso time</figcaption></figure></div><div class="stack-controls"><button aria-label="Imagem anterior" data-stack-prev="" type="button"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 4 8 12l8 8"/></svg></button><p aria-live="polite" data-stack-status="">01 / 04: Encontro do Team Hawks</p><button aria-label="Próxima imagem" data-stack-next="" type="button"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 4l8 8-8 8"/></svg></button></div></div></div>
+</section><section aria-labelledby="treino-title" class="training-section" data-motion="03 05" id="treino"><div class="training-stage"><div class="training-media media-slot" data-media-slot="training"><img alt="Composição visual de futevôlei junto à rede" height="1024" loading="lazy" src="/assets/images/footvolley-action-optimized.webp" width="1536"/></div><div class="training-shade"></div><div class="training-copy"><p class="eyebrow">Disciplina dentro da areia / <span data-training-index="">01</span></p><h2 class="display" id="treino-title"><span data-training-word="">POSICIONE.</span></h2><p data-training-description="">Chegar melhor à bola começa por uma base consistente.</p></div><div class="training-bottom"><div aria-hidden="true" class="training-dots"><i class="active"></i><i></i><i></i></div></div></div><div class="training-transcript"><h3>Sequência técnica</h3><ol><li>Posicione. Chegar melhor à bola começa por uma base consistente.</li><li>Leia. Entenda a trajetória antes de escolher o movimento.</li><li>Execute. Transforme a decisão em um fundamento eficiente.</li></ol></div><div class="shell video-section"><div class="video-carousel" data-media-carousel><div class="video-grid media-track" id="team-videos" tabindex="0" role="region" aria-label="Vídeos do Team Hawks"><div data-video-group="training"><!-- videos:training --></div><div class="video-events" data-video-group="events"><!-- videos:events --></div></div><button class="media-carousel-arrow" data-media-step="-1" type="button" aria-label="Vídeos anteriores" aria-controls="team-videos" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4 8 12l8 8"/></svg></button>
+<button class="media-carousel-arrow" data-media-step="1" type="button" aria-label="Próximos vídeos" aria-controls="team-videos" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4l8 8-8 8"/></svg></button></div></div></section><section aria-labelledby="consultoria-title" class="grain relative bg-ink" data-motion="07 10" id="consultoria">
 <div class="shell section-y relative z-10">
 <div class="grid gap-16 lg:grid-cols-12 lg:gap-12">
 <div class="lg:col-span-5">

@@ -12,22 +12,28 @@ test('all requested photographs and hero copy are assigned to the specified sect
   await expect(page.locator('[data-media-slot="events"] img')).toHaveAttribute('src', /trofeu\.jpg/);
   await expect(page.locator('#contato img')).toHaveAttribute('src', /contact-eagle\.webp/);
   await expect(page.locator('.hover-gallery')).not.toContainText('em breve');
-  await expect(page.locator('.editorial-secondary')).not.toContainText('em breve');
+  await expect(page.locator('#team-hawks .coach-portrait img')).toHaveCount(1);
 });
 
-test('family heading is static and its three outlined lines never overlap', async ({ page }) => {
-  for (const width of [390, 1440]) {
+test('coach copy aligns with the portrait and the removed tagline stays absent', async ({ page }) => {
+  for (const width of [390, 1088, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
-    const heading = page.locator('[data-family-heading]');
-    await heading.scrollIntoViewIfNeeded();
-    await expect(heading.locator('.kinetic-word')).toHaveCount(0);
-    await expect(heading).not.toHaveAttribute('data-kinetic', '');
-    await expect(heading).toHaveCSS('transform', 'none');
-    const boxes = await heading.locator(':scope > span').evaluateAll((spans) => spans.map((span) => ({ top: span.getBoundingClientRect().top, bottom: span.getBoundingClientRect().bottom })));
-    expect(boxes).toHaveLength(3);
-    expect(boxes[0].bottom).toBeLessThanOrEqual(boxes[1].top);
-    expect(boxes[1].bottom).toBeLessThanOrEqual(boxes[2].top);
+    const portrait = page.locator('.coach-portrait img');
+    const copy = page.locator('.coach-copy');
+    await portrait.scrollIntoViewIfNeeded();
+    await portrait.evaluate(img => img.decode());
+    await page.evaluate(() => document.fonts.ready);
+    await expect(copy.locator('[data-family-heading]')).toHaveCount(0);
+    const photoBox = await portrait.boundingBox();
+    const copyBox = await copy.boundingBox();
+    if (width >= 1024) {
+      expect(photoBox.x + photoBox.width).toBeLessThan(copyBox.x);
+      expect(Math.abs(photoBox.y - copyBox.y)).toBeLessThan(2);
+      expect(Math.abs(photoBox.height - copyBox.height)).toBeLessThan(2);
+    } else {
+      expect(photoBox.y + photoBox.height).toBeLessThan(copyBox.y);
+    }
     await expect(page.locator('#manifesto-title')).toBeVisible();
     await expect(page.locator('#manifesto-title .kinetic-word')).toHaveCount(0);
     await expect(page.locator('#manifesto-title')).toHaveCSS('transform', 'none');
@@ -85,9 +91,6 @@ test('gallery opens uncropped photos in a keyboard accessible viewer', async ({ 
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toBeHidden();
   await expect(figure).toBeFocused();
-  await page.locator('.stack-open').click();
-  await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.locator('.image-viewer img')).toHaveAttribute('src', /team-event-01\.webp/);
 });
 
 test('all supplied pictures load without missing assets and hero fallback works', async ({ page }) => {

@@ -1,32 +1,40 @@
 import { test, expect } from '@playwright/test';
 
-for (const width of [1337, 390]) {
-  test(`event videos follow the training videos without shifting on load at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 650 });
-    await page.route('**/src/video-manifest.json*', async route => {
-      const response = await route.fetch();
-      // A small local fixture exercises mounting without depending on supplied MP4s.
-      const body = (await response.text()).replace(/assets\/videos\/[^"']+\.mp4/g, 'tests/fixtures/scrub.webm');
-      await route.fulfill({ response, body });
-    });
-    await page.route('**/*team-hawks-videos*', route => route.fulfill({
-      contentType: 'application/javascript',
-      body: 'export default ["video-03", "video-05"];',
-    }));
+for (const width of [1572, 900, 390]) {
+  test(`all five videos share a row and retain their size at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    await page.evaluate(() => document.fonts.ready);
-    const events = page.locator('.video-events');
-    const training = page.locator('#treino > .video-section > [data-video-group="training"]');
-    await expect(training.locator('.video-card')).toHaveCount(3);
-    await expect(page.locator('#treino > .video-section > [data-video-group="training"] + .video-events .video-card')).toHaveCount(2);
-    const before = await events.boundingBox();
-    await events.scrollIntoViewIfNeeded();
-    await expect(events.locator('video')).toHaveCount(2);
-    await expect.poll(async () => (await events.boundingBox()).width).toBeCloseTo(before.width, 0);
-    expect((await events.boundingBox()).height).toBeCloseTo(before.height, 0);
-    const trainingBox = await training.boundingBox();
-    const eventsBox = await events.boundingBox();
-    expect(eventsBox.y).toBeGreaterThanOrEqual(trainingBox.y + trainingBox.height);
+
+    const track = page.locator('#team-videos');
+    const cards = track.locator('.video-card');
+    await expect(cards).toHaveCount(5);
+    await expect(track.locator('[data-video-group="training"] .video-card')).toHaveCount(3);
+    const boxes = await track.locator('.video-frame').evaluateAll(frames => frames.map(frame => ({
+      top: frame.offsetTop + frame.offsetParent.offsetTop,
+      width: frame.offsetWidth,
+      height: frame.offsetHeight,
+    })));
+    expect(new Set(boxes.map(box => box.top)).size).toBe(1);
+
+    const originalWidth = await track.evaluate(element => element.parentElement.clientWidth);
+    const gap = Math.min(128, Math.max(64, width * 0.08));
+    const columns = width <= 600 ? 1 : width <= 900 ? 2 : 3;
+    const playerLimit = width <= 600 ? Math.min(240, 900 * 0.315) : 450;
+    const trainingWidth = Math.min(playerLimit, (originalWidth - gap * (columns - 1)) / columns);
+    expect(Math.abs(boxes[0].width - trainingWidth)).toBeLessThanOrEqual(1);
+    for (const box of boxes) expect(Math.abs(box.height - box.width * 16 / 9)).toBeLessThanOrEqual(2);
+
+    const previous = page.locator('[aria-controls="team-videos"][data-media-step="-1"]');
+    const next = page.locator('[aria-controls="team-videos"][data-media-step="1"]');
+    await expect(previous).toBeHidden();
+    const trackBox = await track.boundingBox();
+    expect((await next.boundingBox()).x).toBeGreaterThan(trackBox.x + trackBox.width);
+    await next.click();
+    await expect(previous).toBeVisible();
+    const previousBox = await previous.boundingBox();
+    expect(previousBox.x + previousBox.width).toBeLessThan(trackBox.x);
+    await previous.click();
+    await expect(previous).toBeHidden();
   });
 }
-

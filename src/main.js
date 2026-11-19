@@ -157,6 +157,28 @@ listen(heroImage, 'error', useHeroFallback);
 if (heroImage.complete && !heroImage.naturalWidth) useHeroFallback();
 const videos = initVideos(listen);
 
+for (const carousel of $$('[data-media-carousel]')) {
+  const track = $('.media-track', carousel);
+  const [previous, next] = $$('[data-media-step]', carousel);
+
+  function updateArrows() {
+    previous.hidden = track.scrollLeft <= 1;
+    next.hidden = track.scrollWidth - track.clientWidth - track.scrollLeft <= 1;
+  }
+
+  for (const arrow of [previous, next]) {
+    listen(arrow, 'click', () => {
+      track.scrollBy({
+        left: Number(arrow.dataset.mediaStep) * track.clientWidth * 0.85,
+        behavior: reduceQuery.matches ? 'instant' : 'smooth',
+      });
+    });
+  }
+  listen(track, 'scroll', updateArrows, { passive: true });
+  listen(window, 'resize', updateArrows);
+  updateArrows();
+}
+
 // Physical image stack: keyboard, buttons and touch all select the same item.
 const cards = $$('[data-stack-card]');
 const stack = $('.image-stack');
@@ -178,14 +200,16 @@ for (const [index, spec] of (content.gallery || []).slice(0, cards.length).entri
 let stackIndex = 0;
 let touchStart;
 function paintStack(animate = !mobileQuery.matches) {
+  const offsets = [0, -10, 10, 0];
+  const angles = [0, -9, 9, 0];
   cards.forEach((card, index) => {
     const distance = (index - stackIndex + cards.length) % cards.length;
     card.style.zIndex = String(cards.length - distance);
     card.setAttribute('aria-hidden', String(distance !== 0));
     const properties = {
-      xPercent: distance * 8,
+      xPercent: offsets[distance],
       yPercent: distance * -3,
-      rotation: distance === 0 ? -4 : distance * 7 - 4,
+      rotation: angles[distance],
       rotationY: 0,
       scale: 1 - distance * .055,
       opacity: 1,
@@ -224,13 +248,13 @@ paintStack(false);
 
 const viewer = $('.image-viewer');
 let viewerTrigger;
-function openImage(figure, trigger = figure) {
+function openImage(figure) {
   const image = $('img', figure);
-  viewerTrigger = trigger;
+  viewerTrigger = figure;
   $('img', viewer).src = image.currentSrc || image.src;
   $('img', viewer).alt = image.alt;
   $('#image-viewer-caption').textContent = $('figcaption, .slot-label', figure)?.textContent || image.alt;
-  trigger.setAttribute('aria-expanded', 'true');
+  figure.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
   viewer.showModal();
   $('.viewer-close').focus();
@@ -248,7 +272,6 @@ $$('.hover-image').forEach((figure) => {
     if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openImage(figure); }
   });
 });
-listen($('.stack-open'), 'click', () => openImage(cards[stackIndex], $('.stack-open')));
 $$('.spotlight-card, .motion-button').forEach((surface) => {
   let bounds;
   listen(surface, 'pointerenter', () => {
@@ -419,20 +442,6 @@ function buildMotion() {
       });
 
       if (!mobile) {
-      gsap.fromTo('.editorial-primary', { rotation: -9, y: 150, scale: .84 }, {
-        rotation: 3, y: -60, scale: 1.05, ease: 'none',
-        scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
-      });
-      gsap.fromTo('.editorial-secondary', { rotation: 16, y: 100, scale: .88 }, {
-        rotation: -8, y: -60, scale: 1, ease: 'none',
-        scrollTrigger: { trigger: '#team-hawks', start: 'top bottom', end: 'bottom top', scrub: 1 },
-      });
-      $$('.hover-gallery > li').forEach((item, index) => {
-        gsap.fromTo(item, { y: 40, rotation: 0, scale: 1 }, {
-          y: 0, rotation: 0, scale: 1, ease: 'none',
-          scrollTrigger: { trigger: item, start: 'top bottom', end: 'top 35%', scrub: .8 },
-        });
-      });
       gsap.fromTo(stack, { y: 90, rotationY: 0 }, {
         y: -30, rotationY: 0, force3D: false, ease: 'none',
         scrollTrigger: { trigger: '.stack-collection', start: 'top bottom', end: 'bottom top', scrub: 1 },
